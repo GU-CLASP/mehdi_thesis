@@ -1,0 +1,491 @@
+%% modified_cleanthesis.sty
+%% Copyright 2015 R. Langner
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is R. Langner.
+%
+% This work consists of all files listed in MANIFEST.md.
+%
+%
+% **************************************************
+%
+% Clean Thesis
+% -- A LaTeX Style for Thesis Documents --
+%
+% **************************************************
+%
+% Readme:
+% ----------------------------------------
+% Please check out the README.md file in the root of this package.
+%
+% **************************************************
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{modified_cleanthesis}[2015/08/26 v0.3.1 Clean-looking thesis style inspired by Apple's user guide documents, modified with simplifications]
+%
+% **************************************************
+% Package options
+% **************************************************
+%
+% -- process all available package options
+%
+%
+% The xkeyval package enables us to handle for example key-value pairs
+% in an easy way
+\RequirePackage{xkeyval}
+
+
+\DeclareOptionX*{
+	\PackageWarning{cleanthesis}{Unknown option ‘\CurrentOption’}%
+}
+\ProcessOptionsX[ct]<cthesis>
+
+
+% **************************************************
+% Color Definitions
+% **************************************************
+%
+% -- defines color themes and color commands
+%
+%
+% The xcolor package enables us to create/handle/name different colors
+\RequirePackage[dvipsnames]{xcolor}
+
+
+
+\definecolor{guDarkBlue}{cmyk}{1,0.75,0.15,0} % GU dark blue
+\definecolor{guDarkRed}{cmyk}{0,0.91,0.56,0.34} % GU dark red
+\definecolor{guBlueGray}{cmyk}{0.185,0,0,0.27} % GU blue gray
+\definecolor{guYellow}{cmyk}{0.11,0,1,0.11} % GU yellow
+\definecolor{guDarkBrown}{cmyk}{0.50,0.85,1,0.35} % GU dark brown
+\definecolor{guLightBrown}{cmyk}{0,0.56,0.94,0.34} % GU light brown
+\definecolor{guOrange}{cmyk}{0,0.47,1,0.08} % GU orange
+
+% defines general colors
+\definecolor{ctcolorblack}{cmyk}{0,0,0,1}
+\definecolor{ctcolorgray}{cmyk}{0,0,0,0.5}
+\definecolor{ctcolorgraylight}{cmyk}{0.03,0,0.03,0.1}
+\definecolor{ctcolordarkgreen}{cmyk}{0.75,0,1,0.6}
+\definecolor{ctcolorwhite}{cmyk}{0,0,0,0}
+\ifdefined\isprintversion
+\definecolor{ctcolorlightblue}{cmyk}{0,0,0,0.5}
+\definecolor{ctcolordarkblue}{cmyk}{0,0,0,0.85}
+\else
+\definecolor{ctcolorlightblue}{cmyk}{0.185,0,0,0.5}
+\definecolor{ctcolordarkblue}{cmyk}{1,0.75,0.15,0}
+\fi
+% -- footer colors
+\colorlet{ctcolorfooterpage}{ctcolorblack}
+\colorlet{ctcolorfooterline}{ctcolordarkblue}
+\colorlet{ctcolorfootermark}{ctcolorblack}
+\colorlet{ctcolorfootertitle}{ctcolorgray}
+% -- sectioning colors
+\colorlet{ctcolortitle}{ctcolorblack}
+\colorlet{ctcolorpartnum}{ctcolorblack}
+\colorlet{ctcolorpartline}{ctcolordarkgreen}
+\colorlet{ctcolorparttext}{ctcolorwhite}
+\colorlet{ctcolorchapternum}{ctcolordarkblue}
+\colorlet{ctcolorchapterline}{ctcolordarkblue}
+\colorlet{ctcolorsection}{ctcolorblack}
+\colorlet{ctcolorsubsection}{ctcolorblack}
+\colorlet{ctcolorparagraph}{ctcolorblack}
+% --> text colors
+\colorlet{ctcolorfloatlabel}{ctcolorblack}
+\colorlet{ctcolorlistlabel}{ctcolorblack}
+
+% **************************************************
+% Font Definitions (see http://www.tug.dk/FontCatalogue/)
+% **************************************************
+\RequirePackage[T1]{fontenc}		% font types and character verification
+\RequirePackage{lmodern}	% font set: Latin Modern
+\RequirePackage{charter}	% font set: Charter
+
+% **************************************************
+% Load Packages
+% **************************************************
+%\RequirePackage{fixltx2e}			% packages provides fixes to LaTeX2e
+\RequirePackage{microtype}			% typographic tuning
+\RequirePackage{setspace}			% for line spacing, e.g. \onehalfspacing
+\RequirePackage[]{graphicx}			% graphics import features
+\RequirePackage{fancyhdr}			% for header and footer modifications
+\RequirePackage{enumitem}			% for simple list modifications
+\RequirePackage{blindtext}		% package for blind text
+\RequirePackage{textcomp}			% different symbols
+\RequirePackage{hyperref} 			% interactive link inside the document
+
+%
+\RequirePackage[					% modify figure and table captions
+	font={small}, 					% 	- small font size
+	labelfont={bf,sf,color=ctcolorfloatlabel},% 	- label in bold, sans-serif and magenta
+	labelsep=colon,				% 	- separator: none, colon, period, space, quad, newline, endash
+	singlelinecheck=false			% 	- no centered single-lined captions
+]{caption}[2008/08/24]
+%
+\ifdefined\isprintversion
+\RequirePackage[					% page layout modifications
+	nohead,							% 	- no header
+	includefoot,					% 	- include footer space
+	footskip=10mm,					% 	- footer skip size
+	top=20mm,						% 	- total body: top margin
+	bottom=20mm,					% 	- total body: bottom margin
+	bindingoffset=18mm,				% 	- binding correction
+	paperwidth=185mm,     % 165(s5 width) + 2mm margine
+	paperheight=262mm,    % 245(s5 height) + 2mm top + 2mm bottom 
+	left=16mm,						% 	- total body: left margin (odd pages)
+	right=16mm,						% 	- total body: right margin (odd pages)
+	layoutsize={165mm,242mm},
+	layoutoffset={10mm,10mm},
+	showcrop,
+]{geometry}
+\else
+\RequirePackage[					% page layout modifications
+	nohead,							% 	- no header
+	includefoot,					% 	- include footer space
+	footskip=10mm,					% 	- footer skip size
+	top=20mm,						% 	- total body: top margin
+	bottom=20mm,					% 	- total body: bottom margin
+	bindingoffset=0mm,				% 	- binding correction
+	paperwidth=165mm,     % 165(s5 width) + 2mm margine
+	paperheight=242mm,    % 245(s5 height) + 2mm top + 2mm bottom 
+	left=25mm,						% 	- total body: left margin (odd pages)
+	right=25mm,						% 	- total body: right margin (odd pages)
+]{geometry}
+\fi
+%
+\RequirePackage[					% advanced quotes
+	strict=true,					% 	- warning are errors now
+	style=german					% 	- german quotes
+]{csquotes}
+%
+%\RequirePackage[					% use biblatex for bibliography
+%	backend=\cthesis@bibsys,		% 	- use biber backend (bibtex replacement) or bibtex
+%	bibencoding=utf8,				% 	- use auto file encode
+%	style=\cthesis@bibstyle,		% 	- use alphabetic (or numeric) bib style
+%	natbib=true,					% 	- allow natbib commands
+%	hyperref=true,					% 	- activate hyperref support
+%	backref=true,					% 	- activate backrefs
+%	isbn=false,						% 	- don't show isbn tags
+%	url=false,						% 	- don't show url tags
+%	doi=false,						% 	- don't show doi tags
+%	urldate=long,					% 	- display type for dates
+%	maxnames=3,%
+%	minnames=1,%
+%	maxbibnames=5,%
+%	minbibnames=3,%
+%	maxcitenames=2,%
+%	mincitenames=1%
+%]{biblatex}
+%\bibliography{\cthesis@bibfile}
+%\DefineBibliographyStrings{ngerman}{%
+%	andothers = {{et\,al\adddot}}, % 'et al.' instead of 'u.a.'
+%	backrefpage = {{zitiert auf Seite}},%
+%	backrefpages = {{zitiert auf den Seiten}},%
+%}
+
+% **************************************************
+% Text Format
+% **************************************************
+\setstretch{1.2}					% value for line spacing, use \setstretch{} or \singlespacing or \onehalfspacing or \doublespacing
+\setlength{\parindent}{0em}			% value for paragraph indentation
+\clubpenalty = 10000				% prevent single lines at the beginning of a paragraph (Schusterjungen)
+\widowpenalty = 10000				% prevent single lines at the end of a paragraph (Hurenkinder)
+\displaywidowpenalty = 10000		%
+
+% **************************************************
+% List Definitions
+% **************************************************
+\newenvironment{my_list}%
+	{\begin{enumerate}%
+		\setlength{\itemsep}{1pt}%
+		\setlength{\parskip}{0pt}%
+		\setlength{\parsep}{0pt}%
+	}%
+	{\end{enumerate}}
+%
+\newenvironment{my_list_num}
+	{\begin{enumerate}[topsep=-5pt,partopsep=0pt,parsep=2pt,itemsep=3pt]}
+	{\end{enumerate}}%
+
+\newenvironment{my_list_item}
+	{\begin{itemize}[topsep=-5pt,partopsep=0pt,parsep=2pt,itemsep=3pt]}
+	{\end{itemize}}%
+
+\newenvironment{ct_version_list}
+	{\begin{itemize}[topsep=-5pt,partopsep=0pt,parsep=2pt,itemsep=3pt]}
+	{\end{itemize}}%
+
+	\newenvironment{ct_version_list_sub}
+		{\begin{itemize}[topsep=-0pt,partopsep=0pt,parsep=0pt,itemsep=0pt]}
+		{\end{itemize}}%
+
+\renewcommand{\descriptionlabel}[1]{%
+	\hspace*{\labelsep}%
+	\color{ctcolorlistlabel}%
+	\tgherosfont\textbf{#1}%
+}
+\newenvironment{my_list_desc}
+	{\begin{description}[%
+		style=multiline,%
+		topsep=-5pt,%
+		leftmargin=3cm,%
+		partopsep=0pt,%
+		parsep=2pt,%
+		itemsep=3pt%
+	]}
+	{\end{description}}%
+
+% **************************************************
+% Header and Footer
+% **************************************************
+\RequirePackage{ragged2e}
+
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{%
+	\markboth{%
+		\footnotesize%
+		{\color{ctcolorfootermark}\textbf{\chaptername\ \thechapter}}%
+		\quad%
+		{\color{ctcolorfootertitle}#1}%
+	}{}%
+}
+\renewcommand{\sectionmark}[1]{%
+	\markright{%
+		\footnotesize%
+		{\color{ctcolorfootermark}\textbf{\thesection}}%
+		\quad%
+		{\color{ctcolorfootertitle}#1}%
+	}%
+}
+%
+\fancypagestyle{plain}{%
+	\fancyhf{}
+	\fancyfootoffset[OR]{1.85cm}
+	\fancyfoot[OR]{%
+		{\ }\tgherosfont%
+		{\color{ctcolorfooterline}\rule[-90pt]{1.25pt}{100pt}}%
+		\hspace*{10pt}\begin{minipage}[b]{1.5cm}%
+			\color{ctcolorfooterpage}\normalsize\textbf{\thepage}%
+		\end{minipage}%
+	}
+	\fancyfootoffset[EL]{1.85cm}
+	\fancyfoot[EL]{%
+		\tgherosfont%
+		\begin{minipage}[b]{1.5cm}%
+			\RaggedLeft\color{ctcolorfooterpage}\normalsize\textbf{\thepage}%
+		\end{minipage}%
+		\hspace*{10pt}{\color{ctcolorfooterline}\rule[-90pt]{1.25pt}{100pt}}%
+	}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+%
+\fancypagestyle{maincontentstyle}{%
+	\pagestyle{plain}
+	\fancyhf{}
+	\fancyfootoffset[OR]{1.85cm}
+	\fancyfoot[OR]{%
+		{\ }\tgherosfont\footnotesize%
+		\rightmark%
+		\hspace*{0.75cm}{\color{ctcolorfooterline}\rule[-90pt]{1.25pt}{100pt}}%
+		\hspace*{10pt}\begin{minipage}[b]{1.5cm}%
+			\color{ctcolorfooterpage}\normalsize\textbf{\thepage}%
+		\end{minipage}%
+	}
+	\fancyfootoffset[EL]{1.85cm}
+	\fancyfoot[EL]{%
+		\tgherosfont\footnotesize%
+		\begin{minipage}[b]{1.5cm}%
+			\RaggedLeft\color{ctcolorfooterpage}\normalsize\textbf{\thepage}%
+		\end{minipage}%
+		\footnotesize%
+		\hspace*{10pt}{\color{ctcolorfooterline}\rule[-90pt]{1.25pt}{100pt}}%
+		\hspace*{0.75cm}\leftmark%
+	}
+}
+
+
+% **************************************************
+% Sectioning Commands
+% **************************************************
+%
+\newcommand*{\ctSetFont}[3]{%
+	arg1=#1, arg2=#2, arg3=#3%
+}
+
+% own font definitions
+\newcommand{\helv}{\fontfamily{phv}\fontsize{9}{11}\selectfont}
+\newcommand{\book}{\fontfamily{pbk}\fontseries{m}\fontsize{11}{13}\selectfont}
+\newcommand{\tgherosfont}{\fontfamily{qhv}\selectfont}
+
+\newcommand{\thesispartlabelfont}{\color{ctcolorpartnum}\tgherosfont\fontsize{60}{60}\selectfont}
+\newcommand{\thesispartfont}{\color{ctcolorparttext}\huge \tgherosfont}
+\newcommand{\thesischapterfont}{\color{ctcolorblack}\huge \fontfamily{phv}\selectfont}
+\newcommand{\thesissectionfont}{\color{ctcolorsection}\LARGE \tgherosfont}
+\newcommand{\thesissubsectionfont}{\color{ctcolorsubsection}\Large \tgherosfont}
+\newcommand{\thesisparagraphfont}{\color{ctcolorparagraph}\tgherosfont\normalsize\bfseries}
+%
+% headings
+\setkomafont{part}{\thesispartfont} % for partentries
+\setkomafont{chapter}{\thesischapterfont} % for chapter entries
+\setkomafont{section}{\thesissectionfont} % for section entries
+\setkomafont{subsection}{\thesissubsectionfont} % for section entries
+\addtokomafont{subsubsection}{\tgherosfont}
+%\addtokomafont{paragraph}{\tgherosfont}
+\setkomafont{paragraph}{\thesisparagraphfont}
+
+%\setkomafont{subsection}{\large} % for subsection entries
+
+
+
+%
+% **************************************************
+% Sectioning
+% **************************************************
+%
+% -- modifications regarding sectioning (structural) commands,
+%    i.e. \part, \chapter, \section, \subsection, \subsubsection, \paragraph
+%
+%
+% The package titlesec enables us to modify (style) the sectioning commands
+% -- usage: \titlespacing{\command}{left}{before-sep}{after-sep}[right-sep]
+% -- usage: \titleformat{\command}[shape]{format}{label}{sep}{before}[after]
+% -- usage: \titleclass{\command}{class}
+%    -- classes: page (single page), top (like chapters),
+%                straight (title in the middle)
+\RequirePackage{titlesec}
+%
+% > formats: \part
+\titleclass{\part}{top} % <-- display:
+\assignpagestyle{\part}{empty}	% <-- no page numbers/decorations
+\titleformat{\part}%
+	[display]%
+	{\usekomafont{part}}%
+	{\raggedleft{%
+		{\thesispartlabelfont%
+			\partname\ \thepart\ \quad}%
+		{\color{ctcolorpartline}%
+			\vspace{-105pt}\hspace*{-200pt}\rule[20pt]{600pt}{50pt}}
+		}%
+	}%
+	{0em}%
+	{\raggedleft}%
+	[\phantomsection]
+%
+% > formats: \chapter
+%
+% The following command is used to avoid overlapping
+% of the chapter headline text, see bug/ticket #1
+% Solution adapted according to the comment from "Gonzalo Medina" - Thanks
+% http://tex.stackexchange.com/questions/165878/width-of-chapter-section-with-titlesec
+\newcommand\ctformatchapter[1]{\parbox[t]{\dimexpr\textwidth-4em\relax}{\RaggedRight#1}}
+%
+\titleformat{\chapter}[display]%
+	{\usekomafont{chapter}}%
+	{\vspace{-8em}\raggedleft{%
+	%{\vspace{-8em}\raggedright{%
+	%	\hspace*{89mm}%
+		{\color{ctcolorchapterline}%
+			\rule[-5pt]{2pt}{5cm}}%\quad%
+		\hspace*{5mm}%
+		{\color{ctcolorchapternum}
+			\fontsize{60}{60}\selectfont\thechapter}%
+		}%
+	}%
+	{-2.1em}%
+	{\ctformatchapter}%
+	[\phantomsection]
+%
+% > formats: \section
+\titlespacing{\section}{0em}{.75em}{.2em}
+\titleformat{\section}[hang]%
+	{\usekomafont{section}}%
+	{\color{ctcolorblack}\thesection\hspace*{10pt}}%
+	{0pt}%
+	%{}%
+	{\RaggedRight}%
+	[\phantomsection]
+%
+%
+% > formats: \subsection
+\titlespacing{\subsection}{0em}{.5em}{0em}
+\titleformat{\subsection}[hang]%
+	{\usekomafont{subsection}}%
+	{\color{ctcolorblack}\thesubsection\hspace*{10pt}}%
+	{0pt}%
+	{\RaggedRight}%
+	[\phantomsection]
+%
+% > formats: \paragraph
+\titlespacing{\paragraph}{0pt}{\parsep}{1em}%[0pt]
+% \titleformat{\paragraph}[runin]%
+	% {\usekomafont{paragraph}}%
+	% {}%
+	% {}%
+	% {}%
+	% []
+%
+%
+% **************************************************
+% ToC, LoF, LoT
+% **************************************************
+%
+% -- modifications regarding the table of contents,
+%    the list of figures and the list of tables
+%
+%
+% The tocloft package enables us to control the typographic design of the
+% table of contents, list of figures and list of tables
+\RequirePackage{tocloft}
+%
+% > adjusts the indention for figure and table entries (lof and lot)
+%   -- \cftsetindents{entry}{indent}{numwidth} sets the entry's indent to
+%      the length indent and its numwidth to the length numwidth
+\cftsetindents{figure}{0em}{3em}
+\cftsetindents{table}{0em}{3em}
+\renewcommand{\contentsname}{{\thesissectionfont Contents}}
+\renewcommand{\cftpartpagefont}{\tgherosfont\large\bfseries\selectfont}
+\renewcommand{\cftchappagefont}{\small\bfseries\selectfont}
+\renewcommand{\cftsecpagefont}{\small\selectfont}
+
+\renewcommand{\cftpartfont}{\tgherosfont\large\bfseries\selectfont}
+\renewcommand{\cftchapfont}{\small\bfseries\selectfont}
+\renewcommand{\cftsecfont}{\small\selectfont}
+
+%
+%
+%
+% **************************************************
+% Mishmash
+% **************************************************
+%
+% Clean chapter quotations
+\newcommand{\hugequote}{%
+	{\book\fontsize{75}{80}\selectfont%
+	\hspace*{-.475em}\color{ctcolorwhite}%
+	\textit{\glqq}%
+	\vskip -.26em}%
+}
+\newcommand{\chaptersource}[3]{%
+	\colorbox{ctcolorgraylight}{\begin{minipage}{\textwidth}%
+		\vspace{1em}%
+		\begin{flushright}%
+			\begin{minipage}{.85\textwidth}%
+				\begin{flushleft}
+					{\hugequote}\textbf{#1}\ {#2}\ \textit{#3}\par%
+				\end{flushleft}
+			\end{minipage}%
+			\begin{minipage}{.055\textwidth}\ \end{minipage}%
+		\end{flushright}%
+		\vspace{0em}%
+	\end{minipage}}%
+	\bigskip
+}
+

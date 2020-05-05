@@ -1,0 +1,326 @@
+\chapter{Summary Of Studies}
+\label{sec:related}
+
+
+
+In this chapter, we summarise the questions, methods and findings of six studies and discuss their relevance to the main aims of the thesis.
+
+\section{Study 1: Functional/geometric bias in neural language models}
+\label{study:fungeo}
+Simon Dobnik, Mehdi Ghanimifard, and John Kelleher. 
+Exploring the Functional and Geometric Bias of Spatial Relations Using Neural Language Models.
+\textit{In Proceedings of the First International Workshop on Spatial Language Understanding, pp. 1-11. 2018.}
+
+Understanding spatial language is fundamental to human-robot interactions. 
+The meaning of spatial relations in scene descriptions is grounded in the geometry of the scene and the functional relationship between objects. 
+We used a neural language model on a large corpus of image descriptions to investigate the earlier observations about functional bias in spatial relationships.
+We contributed to understanding that are encoded in unimodal neural language models.
+
+\subsection{Questions}
+
+Does the performance of trained neural language models on relational descriptions in the Visual Genome dataset  \citep{krishna2017visual} account for the expectation that more functional spatial relations are more predictable based on the objects they describe? 
+
+We propose two hypotheses: 
+\begin{itemize}
+	\item Descriptions with functional relations (in contrast with geometric relationships) have lower perplexity in their language model over the held-out test suite (more likely gold-standard descriptions) because they describe a functionally common situation. The target/landmark object pairs in the dataset are more specific to functional relations compared to geometric relations. 
+	\item When modifying spatial relations with any alternatives, the phrases with the initial choice of functional relations gain increased perplexity because they are more contextually dependent on targets and landmarks compared to geometric relations.
+\end{itemize}
+
+
+\subsection{Method}
+We trained the neural language model on image descriptions in Visual Genome. Then, we measured the perplexity of the model on held-out descriptions based on their spatial relations. In our experiments, we examined the hypothesis on both natural occurring descriptions in the dataset and the down-sampled balanced dataset.
+
+\subsection{Findings and conclusions}
+We observed from the perplexity of the language model that functionally-biased spatial relationships are more predictable when the model was trained on the dataset with a naturally occurring frequency of descriptions.
+However, training the model on a down-sampled dataset did not result in the expected outcome of perplexities for each test group.%
+We reported a more detailed examination of sensitivity %
+of the language model.
+Our observation showed that the degree of sensitivity for target and landmark is not the same in the two groups of spatial relations. 
+A possible explanation for different sensitivity for targets and landmarks is the misalignment between word order, semantic structure of relations and the cognitive process of choosing related objects as landmark and target. 
+Misalignment of word order and the underlying semantic structure of spatial expressions explains why the forward and backward direction language models have different levels of perplexity.
+
+The second category of the hypothesis was only partially confirmed. 
+Only a few spatial relations confirmed the hypothesis. 
+While some geometric relations, such as \emph{`above'} tend to see a high degree of change in perplexity when replaced with other spatial relations, the dependency of geometric relations on the textual context leaves interesting open questions about the world knowledge and spatial knowledge in neural language models.
+
+\paragraph{Author contributions}
+Mehdi Ghanimifard had the main responsibility for implementing the model, conducting the experiments and reporting it. Simon Dobnik and John Kelleher had shared responsibility for the remaining aspects of this research. All authors read and approved the final manuscript.
+
+\section{Study 2: Representation of spatial relations in neural language models}
+\label{study:what}
+Mehdi Ghanimifard and Simon Dobnik. 
+\emph{What} a neural language model tells us about spatial relations.
+\textit{In Proceedings of the Combined Workshop on Spatial Language Understanding (SpLU) and Grounded Communication for Robotics (RoboNLP), pp. 71-81. 2019.}
+
+We followed up the question about possible encoded knowledge in section~\ref{study:fungeo} about spatial relations in unimodal neural language models.
+In this work, we extend the method to inspect the knowledge of spatial relations in generative language models. 
+One of the methods for measuring lexical knowledge in distributional semantics is analogical reasoning tasks. 
+The knowledge of spatial relations in the image description task may be different from the visual-cognitive knowledge required for human judgment on spatial relations, so we also examined if learned representations are transferable to other tasks.
+
+
+\subsection{Questions}
+\begin{itemize}
+	\item What should we expect from a contextualised model of spatial relations based on textual features in terms of their functional and geometric bias?
+	\item How can we inspect these in a generative language model? 
+	\item How do the learned representations from the generative model compare with representations from human judgments?
+\end{itemize}
+
+\subsection{Method}
+
+We trained a generative LSTM language model on region descriptions. 
+Then, we inspected %
+how the language model encodes descriptions of spatial relations in swapped contexts of target and landmark objects in terms of perplexity.
+We proposed a method in which word-context vectors are produced based on augmented datasets, swapping spatial relations in the context of other spatial relations. Perplexities of these generated word-context examples built perplexity-based vector space for spatial relations. 
+
+We ran analogical tests on these vectors and other textual embeddings to inspect how these representations differed from each other. 
+Finally, we compared them with vector representations of human acceptability judgments and relatedness judgments.
+
+\subsection{Findings and Conclusions}
+In the absence of the image, we expected contextual representations to learn object-specific knowledge (functional knowledge). 
+However, the learned representations showed high performance in solving analogical tasks that required also some sense of geometry. 
+Our analysis is that functional knowledge must be complementary to geometric knowledge, which is why language models can partly solve these puzzles. 
+These finding were also confirmed with qualitative inspections,
+for example
+the representations of \emph{`left'} and \emph{`right'} were similar to each other and different from \emph{`above'} and \emph{`over'}.
+
+The task of judging acceptabilities, the task of generating descriptions and annotations, and the task of finding related words are three different tasks, perhaps using different kinds of spatial knowledge.
+The last experiment comparing the similarities of representations in the image description task, acceptability judgments and relatedness experiments hinted that spatial relations in the image description task might use different types of knowledge about space and spatial relations. 
+
+The findings of this study raise questions that links this study to study four and five.
+Knowing that textual context provides discriminative features for identifying spatial relations, we argue that, in language generation tasks, one can ground the word choices in textual evidence. 
+Generative neural language models can encode task-specific knowledge of space, including functional and geometric bias, when describing the relation between two objects. 
+With this insight, the consequence of memorised knowledge is an open question for multimodal language models \textemdash how does a multimodal language model balance the attention to knowledge of the scene and linguistic representations in the task? 
+
+\paragraph{Author contributions}
+Mehdi Ghanimifard had the main responsibility for implementing the model, conducting the experiments and reporting it. Mehdi Ghanimifard and Simon Dobnik had shared responsibility for the remaining aspects of this research. Both authors read and approved the final manuscript.
+
+\section{Study 3: Functional/geometric spectrum in bounding boxes}
+\label{study:bbox_grounding}
+Simon Dobnik and Mehdi Ghanimifard. 
+Spatial descriptions on a functional-geometric spectrum: the location of objects.
+\textit{Preprint - 2020.}
+
+In the previous two studies, we investigated the distributional properties of spatial relations in language. 
+We argued that functional knowledge and geometric knowledge are encoded in distributional representation, which can be captured to some extent with neural language models. 
+To complement this study on the grounding of spatial relations for image descriptions, we extended the investigation on the distributional properties of bounding boxes for the spatial relations that describe them. 
+More specifically, in this study, we used bounding boxes to extract the basic geometric features of the relations between two objects. 
+Then, we inspected the geometric feature distribution of each %
+spatial relation.
+
+\subsection{Questions}
+\begin{itemize}
+	\item Are the bounding box features extracted from annotated images reliable descriptors for spatial relations; do the extracted features correspond to other geometric representations, such as spatial templates? 
+	\item Are geometrically biased spatial relations%
+	obtained in constrained experimental settings
+	reflected in more predictable locations of objects?
+	Can they be mapped into fewer variations of their related object locations?
+\end{itemize}
+
+\subsection{Methods}
+For each relation, we collected the pairs of bounding boxes from the relationship dataset in the Visual Genome \citep{krishna2017visual}. 
+After standardising the bounding boxes, each pair of objects produced several feature vectors $[x, y, d]$.  Inspired by the Attentional Vector Sum (AVS) model  \cite{RegierCarlson:2001},
+the bounded boxes were converted to feature vectors that expressed the geometric relations between individual locations of objects.
+The expected feature vectors for each spatial relation 
+are
+comparable with %
+spatial templates. 
+Then, we inspected the variations and skewness of the feature vector distributions from their centroid to determine if this%
+accounts for geometric bias.  
+The lower the variation, the more geometrically biased is the relation.
+
+\subsection{Findings and conclusion}
+We found that the bounding box features %
+represented as the
+weighted sum vectors from acceptability scores in spatial templates for projective relations. 
+We found that the feature vectors for geometrically biased relations diverge less from the average vectors compared to their more functionally biased equivalent relations. 
+The distribution of feature vector divergence from the average vector is more skewed toward zero when they describe a geometrical relation. 
+We also inspected the properties of some verbal relations with spatial content. 
+These spatial features indicate spatial regularities in the image description dataset.
+Practically, the findings of this study would be helpful when designing models for image captioning, as it demonstrates the representations that are relevant for different types of descriptions.
+
+\paragraph{Author contributions}
+Mehdi Ghanimifard had the main responsibility for implementing the model, conducting the experiments and reporting it. Simon Dobnik and Mehdi Ghanimifard had shared responsibility for the remaining aspects of this research. Both authors read and approved the final manuscript.
+
+\section{Study 4: Evaluating generation of spatial descriptions with adaptive attention}
+\label{study:knowing}
+Mehdi Ghanimifard and Simon Dobnik. 
+Knowing When to Look for What and Where: Evaluating Generation of Spatial Descriptions with Adaptive Attention.
+\textit{The European Conference on Computer Vision (ECCV) Workshops, pp. 153-161. Springer, Cham, 2018.}
+
+The neural network model in \citep{lu2017knowing} provides an attention mechanism that expands the domain of attention from spatial attention on visual features to hidden states in the language model. 
+In sections~\ref{study:fungeo}~and~\ref{study:what} we explored the possibility of memorising specific spatial knowledge in a unimodal language model, including functional and task-specific spatial relations between objects. 
+In this study, we wanted to determine how a multimodal language model uses it in a language generation task. 
+The attention on linguistic features when knowledge from different sources generating different parts of speech and,
+more specifically, on spatial relations can explain the grounding of the generation model in multimodal information, including the contextual representations in the language model memory. 
+
+\subsection{Questions}
+\begin{itemize}
+	\item How does the attention on visual features and linguistic features change for different parts of speech?
+	\item Is there any difference in the magnitude of attention on visual features between targets and in landmarks?
+	\item Are spatial relations grounded in visual features? %
+\end{itemize}
+
+\subsection{Method}
+The adaptive attention between visual features and linguistic features compete with each other. 
+The magnitude of attention on linguistic features is a sign of dependence on language and context instead of a grounding in visual features.
+In this study, we inspected adaptive attention as a source of explanation for grounding. 
+The average of attention on linguistic features for each part of speech and, for each semantic role in spatial descriptions (target, relation, landmark) is interpreted as an indication for a lack of visual grounding.
+We compared the 
+ranking
+of attentions with the rankings of accuracy rates of a uni-modal language model predicting a mismatch, whether a part of speech has been replaced in the FOIL captions \citep{shekhar2017vision}. %
+We also qualitatively examine the average spatial attentions of descriptions containing each spatial relation; the spatial attention on target, landmark and spatial relation.
+
+\subsection{Findings and conclusion}
+
+The degree of attention on linguistic features varies depending on the part of speech. In particular, we found that the attention on visual features drops when predicting spatial relations compared to the average attention on noun phrases. 
+The average visual attention on parts of speech partially reflected the results from the FOIL task. For example, nouns are highly visually attended but difficult to predict by the language model, the adpositions (prepositions and postpositions) were ranked among the least visually attended parts of speeach while there were moderately predicatable in the FOIL task.
+
+There are three possible explanations for these results:%
+
+\begin{itemize}
+	\item[(1)] Spatial relations are more functional and object dependent in these tasks. Therefore, object-specific spatial features (spatial affordances of objects) encoded in language models are more likely to be predictive of spatial relations than visual clues in the image.
+	\item[(2)] CNNs do not have 
+	represent geometric
+	locational information required for grounding spatial relations. As they are trained for object identification, there is some degree of spatial invariance in these features.
+	\item[(3)] Using softmax for modelling attention is a 
+	disadvantage 
+	in cases where spatial attention is distributed over several objects and their relation.
+	Spatial relations depend on target, landmark and locational features; therefore, the softmax model of attention is noisier when it attends to multiple locations for predicting spatial relations.
+\end{itemize}
+
+
+\paragraph{Author contributions}
+Mehdi Ghanimifard had the main responsibility for implementing the model, conducting the experiments and reporting it. Mehdi Ghanimifard and Simon Dobnik had shared responsibility for the remaining aspects of this research. Both authors read and approved the final manuscript.
+
+\section{Study 5: Generating descriptions with top-down spatial knowledge}
+Mehdi Ghanimifard, and Simon Dobnik. 
+What Goes Into A Word: Generating Image Descriptions With Top-Down Spatial Knowledge.
+\textit{In Proceedings of the 12th International Conference on Natural Language Generation. 2019.}
+
+
+As we continued to question how the neural language model learns spatial knowledge, we investigated the effects of top-down knowledge on space in generating relational image descriptions. As seen in section~\ref{study:knowing}, the attention mechanism for the generative recurrent language model can control and explain how different modalities contribute to generation tasks. In this study, we integrated 
+specific geometric and non-geometric features that are considered relevant in top-down computational models
+of spatial descriptions into the design of the attention model. We compared the effects of three types of top-down spatial knowledge: 
+\begin{itemize}
+	\item[(1)] Where objects are obtained with a separate localisation procedure;
+	\item[(2)] Which object is the target, and which is the landmark, with prior role assignment;
+	\item[(3)] How they are geometrically related in images by representing their spatial configuration.
+\end{itemize} 
+
+\subsection{Questions}
+\begin{itemize}
+	\item[(1)] Which types of top-down spatial knowledge improve language generation? 
+	\item[(2)] How does each category of features contribute to generating image descriptions?
+\end{itemize}
+
+\subsection{Method}
+We experimented on a relationships dataset from the Visual Genome  \cite{krishna2017visual}, training several comparable neural network designs with different spatial modules 
+and different types of top-down knowledge about spatial relations. 
+We changed the attention module in these models 
+to be able to attend over language model features, visual features and geometric features
+and enriched the %
+input representations with 
+the additional geometric features representing the spatial configurations of objects.
+In addition to comparing the performance loss on unseen examples, we inspected the attention module to determine what features had a dominant effect on generating descriptions.
+
+\subsection{Findings and conclusions}
+We observed that the overall performance improved with the additional top-down knowledge of space. 
+However, the results showed a substantial contribution of the %
+language model representations in generating descriptions. 
+Among added spatial knowledge localisation had the strongest effect, while the effects of role assignment and geometric spatial features were mixed. 
+The reasons behind this outcome may be the bias in two kinds of regularities in data \textemdash the spatial composition of objects in photos in this dataset (location of objects are meaningful from the perspective of the photographer) and the task of describing object relations may have neglected the application of certain geometric relations (\emph{`to the left of'}, \emph{`to the right of'})
+but preferring general, less specific spatial relations such as \emph{`close'} and \emph{`with'}.
+
+\paragraph{Author contributions}
+Mehdi Ghanimifard had the main responsibility for implementing the model, conducting the experiments and reporting it. Mehdi Ghanimifard and Simon Dobnik had shared responsibility for the remaining aspects of this research. Both authors read and approved the final manuscript.
+
+\section{Study 6: Learning to compose grounded spatial relations}
+Mehdi Ghanimifard and Simon Dobnik. 
+Learning to Compose Spatial Relations with Grounded Neural Language Models.
+\textit{In IWCS 2017-12th International Conference on Computational Semantics-Long papers. 2017.}
+
+
+A basic definition of grounding linguistic units in visual perception is to associate words and phrases with visual features. 
+Learning these associations must generalise from limited examples to 
+novel
+unseen compositions.
+Compositionality in language imposes a systematic generalisation to the grounding of words and phrases. 
+Due to the broad application of recurrent neural language models in vision and language tasks, this study investigated the capability of a recurrent language model in learning these compositional generalisations in the grounded language.
+
+\subsection{Questions}
+
+\begin{itemize}
+	\item To what extent is the language model trained on single examples can retrieve acceptability representations about the scene? 
+	\item Is the recurrent language model capable of generalising from word compositions to phrase compositions and how does it perform over previously unseen word compositions?
+\end{itemize}
+
+\subsection{Method}
+Simple spatial relations are composable and can be used to construct new relations, such as \emph{`above and to the right of'}, which denotes a relation constructed from two simple relations \emph{`above'} and \emph{`to the right of'}. We constructed artificially composed spatial templates based on their acceptability scores
+of the individual
+the spatial templates \citep{logan1996computational} using known compositional operations. 
+Then, from these templates we generated synthetic 
+examples of individual situations and descriptions based on the aggregated acceptability scores.
+We tested different learning scenarios by controlling for unseen descriptions. 
+In each experiment, we reconstructed the spatial templates of unseen descriptions based on the model scores over
+the unfolded predictions of words.
+Qualitatively, we measured the mismatches between the reconstructed templates and 
+templates that were used to generate the artificial training data.
+
+\subsection{Findings and conclusions}
+We found that a grounded neural recurrent language model is capable of generalising when composing and decomposing word sequences both across the language and the perceptual domain.. 
+We investigated the effects of three factors on the success of the task and found that the degree to which the training data was impoverished had the most substantial effect, the type of composition is an essential factor in learning compositionality, and the presence of ungrounded distractor words had a small effect.
+
+These observations leave an open question \textemdash is the performance for certain compositions reliant on intrinsic structures of recurrent neural networks for learning specific functions or the frequency and variation of data due to the semantic and combinatorial properties of compositions? 
+Negation has fewer possible variations compared to \textsc{`or'} phrases and \textsc{`and'} phrases; 
+therefore, it produces fewer instances and fewer variations in the training data for the negation marker. 
+Distribution of the training data affects the final learned embeddings for the tokens of \textsc{`and'}, \textsc{`or'} and \textsc{`not'}. 
+Learning to encode negation as a function in the recurrent unit might be harder than encoding other functions. 
+
+In summary, the combinatorial properties and semantics of different compositions affect the frequency and distribution of all tokens in language. 
+While the distributional effects have potentially challenging consequences for the uniform learning of compositions, it can signal the difference between them.
+This is why, despite the imbalance in the number of compositions, the model could learn not ground distractor tokens.%
+
+\paragraph{Author contributions}
+Mehdi Ghanimifard had the main responsibility for implementing the model, conducting the experiments and reporting it. Mehdi Ghanimifard and Simon Dobnik had shared responsibility for the remaining aspects of this research. Both authors read and approved the final manuscript.
+
+\section{Study 7: Metaphoricity of compositions with distributional representations}
+Yuri Bizzoni, Stergios Chatzikyriakidis and Mehdi Ghanimifard. 
+``Deep'' Learning: Detecting Metaphoricity in Adjective-Noun Pairs.
+\textit{In Proceedings of the Workshop on Stylistic Variation, pp. 43-52. 2017.}
+
+Recognising metaphoric use of language requires an understanding of the situation, context and how expressions refer to extra-linguistic knowledge about the world. 
+On the other hand, distributional knowledge in unimodal language models encodes word-context associations. 
+Even without the presence of extra-linguistic knowledge of situations, distributional knowledge might be able to determine metaphorical adjective-nouns. 
+In this study, we proposed that knowledge of the compositionality of adjective-nouns is encoded in the pre-trained word embeddings of textual corpora and a simple neural network can transfer this knowledge to metaphor recognition tasks. 
+We used methods of vector composition in a neural network design to predict the metaphoricity of adjective-noun compositions.
+
+
+\subsection{Questions}
+
+\begin{itemize}
+	\item Is it possible to detect metaphoric adjective-noun compositions using pre-trained word embeddings in a shallow neural network? 
+	\item Are there any differences in performance between design choices and language model types, including word2vec \citep{mikolov2013distributed}, GloVe \citep{pennington-etal-2014-glove}, and dependency-based embeddings \citep{levy-goldberg-2014-dependency}?
+\end{itemize}
+
+\subsection{Method}
+We compared different methods of vector composition in a neural network design, similar to \cite{mitchell2010composition}, and used different pre-trained word embeddings. 
+We examined the performance of these models with cross-validation on unseen adjectives and unseen adjective-noun pairs.
+
+\subsection{Findings and Conclusions}
+We found that pre-trained word embeddings with simple neural network designs performed better than previous approaches without using word embeddings. 
+This study raises a question if similar designs could expand metaphoricity judgments to other part-of-speech compositions. 
+The high performance of the textual word embeddings up to 93\% accuracy confirms that unimodal language models can encode some knowledge of the referential meaning to real situations. 
+However, questions concerning the type of knowledge and it are left for subsequent studies.
+
+\paragraph{Author contributions}
+Mehdi Ghanimifard had the main responsibility for writing the model section of the manuscript. Mehdi Ghanimifard and Yuri Bizzoni had shared responsibility on running the experiments and reporting it. Yuri Bizzoni and Stergios Chatzikyriakidis had shared responsibility for the remaining aspects of this research. All authors read and approved the final manuscript.
+
+\section{Summary}
+\label{sec:summaries:conclusion}
+
+In the first three studies, we focused on latent extra-linguistic knowledge of spatial relations in unimodal neural recurrent language models and on geometric features as represented by bounding boxes. 
+
+In studies 4 and 5, we examined the contribution of visual features, geometric features, and the contextual embeddings of a neural language model when generating image descriptions. 
+We showed that, in training generative neural language models, the spatial knowledge used in the task is also learned latently in language models. 
+
+In the last two studies, the focus of the research was on the capability of neural language models to learn compositional knowledge and generalise from limited samples to new word compositions.

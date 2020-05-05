@@ -1,0 +1,93 @@
+\chapter{Introduction}
+\label{sec:intro}
+
+The success of a class of machine learning algorithms in a wide variety of computer vision tasks led to the emergence of the deep learning paradigm over the past decade. 
+This transformation in computer vision has affected the design and application of perceptual systems in other domains, such as human-robot interactions and computational linguistics. 
+Designing a system based on a data-driven module, such as a neural network classifier, would be challenging without a proper explanation of how the system would reason in situated environments. 
+The potential applications of deep neural networks and questions about different models and how to apply them initiated and motivated this research.
+In this chapter, we describe the aims of the thesis, the research questions and the objectives.
+Then, we briefly address the contributions and findings of the studies within this thesis.
+In the next chapters, we provide more detailed background information.
+
+\section{Aims}
+\label{sec:intro:aims}
+The main objective of this thesis is to pave the way for the development of language generation and language understanding systems with deep neural networks that are grounded in both linguistic and visual inputs.
+Several use cases of such systems involve spatial language, including automatically describing the location of objects or locating objects based on a description of their whereabouts.
+These use cases have guided this research to focus on spatial language as an original puzzle in the domain of computational linguistics. 
+
+Our goal of building such systems yielded several challenges and fundamental questions about learning representations using deep neural networks.
+Therefore, the primary aims of the thesis are to assess and investigate the application of neural networks in automatically learning multi-modal representations and the grounding of linguistic units in such representations.
+
+
+
+\section{Research questions}
+\label{sec:intro:questions}
+
+\paragraph{Q1: What spatial knowledge is learned in neural language models?} 
+A fundamental question about the representation of modalities is whether these modalities are sufficient for solving the relevant tasks. Language modelling yields several other questions about the encoding of knowledge. 
+Is the knowledge encoded in these modalities extractable using specific learning algorithms and models?
+In the context of spatial language, is there appropriate geometric knowledge in representations that can be learned with neural models (such as convolutional neural networks)? 
+Is the geometric knowledge in relevant modalities enough to understand or generate a spatial description of a situation?
+
+\paragraph{Q2 How are spatial descriptions associated with spatial knowledge?} 
+The measure of success in a data-driven inference cannot be just the accuracy of correct predictions. 
+To have a valid data-driven procedure, there must be an explanation of which evidence is used to conclude the decision. 
+Therefore, we ask the following questions. 
+How do different modalities contribute to a grounded neural language model? 
+How much do visual inputs affect the results in comparison to language inputs? 
+What is the balance between the contributions of different modalities? Why do different modalities contribute differently to the performance of the model?
+
+\paragraph{Q3 Is there a systematic generalisation?} 
+The assessment of learning with neural networks cannot be limited to the ability of the system to perform specific tasks in specific examples. 
+This question is often asked in the form of learned compositionality. 
+We investigate the generalisability of learning outcomes by looking at learned representations. 
+To what degree are the expected structures, compositions and relations in linguistic and visual-cognitive representations learned with neural networks? 
+If unexpected relations within neural representations emerge from learning distant tasks, such as language modelling, we need to show if the learned representations imposed from the data are transferable knowledge or if the relations are intrinsic to the neural structures and can be generalised.
+If there are intrinsic neural structures that capture the compositional relations in neural representations, we ask if these structures are aligned with expected structures. 
+For example, if a two-arity relation is not symmetric, is the order of arguments preserved in learned representations?
+Is the order in neural structures aligned with the expected order?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Contributions and findings}
+\label{sec:intro:contributions}
+
+
+
+
+
+Our findings are distributed over seven studies. 
+In the first three studies
+\citep{dobnik-etal-2018-exploring,ghanimifard-dobnik-2019-neural,dobnik-ghanimifard-2020-geo},
+we inspect unimodal neural language models and the geometric features of bounding boxes to see what latent knowledge on spatial relations is encoded in the models and data \textbf{(Q1)}. 
+
+Then, in studies 4 and 5  \citep{ghanimifard2018knowing,ghanimifard-dobnik-2019-what},
+we examine the contributions of visual features and contextual embeddings from a language model in generating image descriptions. We show that the contributions of visual features in producing spatial relations are lower than nominal parts of speech. We also show that top-down localisation has the highest contribution to performance compared to any other top-down feature representation \textbf{(Q2)}.  
+In study 5, the question about top-down representations in neural networks resolves whether the intrinsic structures in neural networks affect learning \textbf{(Q3)}. 
+
+The last two studies 
+\cite{ghanimifard-dobnik-2017-learning,bizzoni-etal-2017-deep}, focus on the capability of neural language models to learn compositional knowledge. We show that, when using neural networks as the composition function, the models can generalise from limited samples of language use to new word compositions \textbf{(Q3)}. 
+In study 6, we found that composing unseen word sequences and decomposing unseen single word representations are possible if the neural language model is trained with enough coverage of vocabulary.
+However, this is dependent on combinatorial properties and the complexity of compositional meaning \textbf{(Q2)}.
+In study 7, we found that distributional knowledge from neural language models, abstracted from visual/sensory grounding, can recognise metaphors.
+This finding is consistent with our findings in study 2 \textemdash  that unimodal language models can capture spatial knowledge in distributional patterns \textbf{(Q1)}.
+
+	
+\section{The thesis frame}
+
+This dissertation consists of two parts, the thesis frame and the studies. The first part comprises a synthesis of ideas, background case studies, concepts, a summary of studies and the conclusions of the thesis (chapters 1 to 5). The second part comprises the seven articles of the research project (chapters 6 to 12). 
+
+In chapter 2, we briefly explore the background of spatial language in image descriptions. In chapter 3, we extensively discuss the concept of modelling meaning representations with neural networks. chapter 4 summarises the seven studies in connection with the research questions and their findings. Finally, chapter 5 provides the final summary and discussion of the thesis findings and its connection to the published studies.

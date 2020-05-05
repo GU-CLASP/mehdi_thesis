@@ -1,0 +1,168 @@
+\documentclass[%
+	twoside=true,				%
+	openright,					%
+	parskip=half*,				%
+	chapterprefix=true,			%
+	10pt,						%
+	headings=normal,			%
+	bibliography=totoc,			%
+	listof=totoc,				%
+	titlepage=on,				%
+	captions=tableabove,		%
+	draft=false,				%
+]{scrreprt}%
+
+
+\newcommand{\thesisTitle}{
+	Why the pond is not \textit{outside} the frog?\\
+	Grounding in contextual representations by neural language models
+}
+\newcommand{\thesisName}{Mehdi Ghanimifard}
+\newcommand{\thesisSubject}{Doctoral Thesis in Computational Linguistics}
+\newcommand{\thesisKeywords}{Computational linguistics, Language modelling, Spatial language, Deep neural networks, Neural language model, Computer vision, Vision and language, Meaning representation, grounded language modelling.}
+
+\newcommand{\thesisDate}{May 2020}
+
+\newcommand{\thesisFirstSupervisor}{Simon Dobnik}
+\newcommand{\thesisSecondSupervisor}{Staffan Larsson}
+
+\newcommand{\thesisUniversity}{\protect{University of Gothenburg}}
+\newcommand{\thesisUniversityDepartment}{Department of Philosophy, Linguistics and Theory of Science}
+\newcommand{\thesisUniversityGroup}{The Centre for Linguistic Theory and Studies in Probability (CLASP)}
+
+\newcommand{\thesisUniversityCity}{Gothenburg, Sweden}
+\newcommand{\thesisUniversityStreetAddress}{Box 100, Gothenburg, Sweden}
+\newcommand{\thesisUniversityPostalCode}{SE-405 30}
+
+\newcommand{\thesisISBNPDF}{978-91-7833-917-4}
+\newcommand{\thesisISBNPrint}{978-91-7833-916-7}
+	
+
+\usepackage[utf8]{inputenc}		%
+\usepackage[english]{babel} %
+
+\ifdefined\forkappatxt
+\usepackage[none]{hyphenat}
+\else
+\fi
+
+\usepackage[sectionbib]{natbib,chapterbib}
+
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multirow}
+\setlist[itemize]{noitemsep, nolistsep}
+
+\newcommand\hmmax{0}
+\newcommand\bmmax{0}
+\usepackage{latexsym}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsmath,bm}
+\usepackage{bbm,dsfont}
+\usepackage{mathptmx}
+\usepackage{txfonts}
+\usepackage{tabularx}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\usepackage{modified_cleanthesis}
+
+\ifdefined\isprintversion
+\else
+\usepackage{pdfpages}
+\fi
+
+\hypersetup{					%
+	pdftitle={\thesisTitle},	%
+	pdfsubject={\thesisSubject},%
+	pdfauthor={\thesisName},	%
+	pdfkeywords={\thesisKeywords},	%
+	plainpages=false,			%
+	pdfborder={0 0 0},			%
+	breaklinks=true,			%
+	bookmarksnumbered=true,		%
+	bookmarksopen=true,			%
+	colorlinks=true,			%
+	citecolor=ctcolordarkblue,
+	linkcolor=ctcolordarkblue,
+	urlcolor=ctcolordarkblue
+}
+
+\begin{document}
+
+\renewcaptionname{english}{\figurename}{Figure.}
+\renewcaptionname{english}{\tablename}{Table.}
+
+
+\ifdefined\forkappatxt
+\titleformat{\chapter}[display]%
+{\usekomafont{chapter}}%
+{ }%
+{-2.1em}%
+{\ctformatchapter}%
+[\phantomsection]
+\pagestyle{empty}
+
+\input{content/chapter1-introduction}
+\input{content/chapter2-spatial}
+\input{content/chapter3-uncertainty}
+\input{content/chapter4-summaries}
+\input{content/chapter5-conclusion}
+
+\bibliographystyle{acl_natbib}
+\bibliography{references.bib}
+\else
+\pagenumbering{roman}			%
+\pagestyle{empty}				%
+\input{content/titlepages}		%
+\cleardoublepage
+
+\pagestyle{plain}				%
+\input{content/abstract}		%
+\cleardoublepage
+\input{content/acknowledgement} %
+\cleardoublepage
+\setcounter{tocdepth}{1}		%
+{\hypersetup{
+	colorlinks=true,
+	citecolor=ctcolorblack,
+	linkcolor=ctcolorblack,
+	urlcolor=ctcolorblack
+}\tableofcontents}
+\cleardoublepage
+
+\pagenumbering{arabic}			%
+\setcounter{page}{1}			%
+\pagestyle{maincontentstyle} 	%
+
+\part{Thesis Frame}
+\input{content/chapter1-introduction}
+\input{content/chapter2-spatial}
+\input{content/chapter3-uncertainty}
+\input{content/chapter4-summaries}
+\input{content/chapter5-conclusion}
+
+\bibliographystyle{acl_natbib}
+\bibliography{references.bib}
+
+\part{Studies}
+\input{content/chapterx-topics}
+
+\cleardoublepage
+
+
+\cleardoublepage
+
+\newpage
+\mbox{}
+
+\ifdefined\isprintversion
+\else
+\includepdf[fitpaper,trim=0mm 0mm 185mm 0mm]{gfx/cover/cover-digital.pdf}
+\fi
+
+\fi
+\end{document}

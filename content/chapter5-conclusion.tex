@@ -1,0 +1,171 @@
+\chapter{Final Discussions}
+\label{sec:conclusion}
+
+
+\section{From aims to findings}
+This thesis aimed to build and examine systems capable of generating and understanding situated language. 
+Using deep neural networks, we may be able to build language models to imitate natural language. 
+However, explanations are required regarding what knowledge is encoded in the models, how the models encode relevant knowledge and if such data-driven methods satisfy the systematic generalisations required for going beyond limited data sets. 
+The recent success of deep learning methods in vision and language tasks are promising and challenge theoretical discussions about language grounding and explainability. 
+
+A study on spatial expressions in image descriptions provides challenges and broad applications of a vision and language model for situated language processing. 
+The challenge is to understand how a model should and would ground language in spatial knowledge. 
+Spatial knowledge could include the geometry of a scene and the location of objects; 
+alternatively, it could include causality in physics and the functional affordance of objects in relation to each other. 
+The grounding of linguistic categories in these two types of knowledge presents a challenge for disentangling the representation of two types of knowledge. 
+In the context of deep learning methods, we asked three research questions:
+\begin{itemize}
+	\item[(Q1)] What type of spatial knowledge is encoded in language models?
+	\item[(Q2)] How does the model encode semantic knowledge?
+	\item[(Q3)] Is there systematic generalisation of the knowledge?
+\end{itemize}
+
+In seven studies, we %
+contributed
+to the discussion on grounding and 
+answered the
+questions regarding the use of neural language models. The first \citep{dobnik-etal-2018-exploring} and the second \citep{ghanimifard-dobnik-2019-neural} studies focused on unimodal language models for spatial descriptions. The corpus data suggests a statistical dependency between semantic components of a spatial description $\langle\textsc{Target}$, $\textsc{Relation}$, $\textsc{Landmark}\rangle$.
+This %
+explained with the functional meaning of spatial relations. 
+The fact that %
+spatial descriptions of object pairs are predictable is mostly because of their functional relationship. 
+The overlap between the functional and geometric sense in linguistic categories of spatial relations %
+contributes to the encoding of knowledge about geometry in word distributions as well. 
+On the other hand, both
+studies suggest the possibility that, in an image description task, spatial expressions tend to explain \emph{what} the objects are in the picture instead of \emph{where} they are. 
+Therefore, the non-geometric sense of spatial descriptions has a strong
+effect in these corpora. 
+
+With a 
+focus on
+spatial grounding in the spectrum of functional/geometric sense of relations, in our third study, we looked at the geometric properties of bounding box annotations in images and their distributions 
+for different
+spatial expressions. 
+We found that the variation in the relative location of objects in geometrically biased expressions is lower than 
+in the functionally biased relations.
+This finding is consistent with the predictability of functional relations from linguistic evidence 
+rather than geometric 
+features.
+This conclusion has implications for the evaluation of multi-modal language models, which brought us to the fourth and the fifth studies.
+
+The fourth study \citep{ghanimifard2018knowing} examined the possibility of evaluating grounding based on adaptive attention. We found that pre-trained convolutional visual features contributed more to the generation of nouns compared to other parts of speech. Some spatial relations are more dependent on contextual language embeddings. This is consistent with our view that spatial relations in image descriptions are less dependent on the 
+location of objects. 
+Due to the opaque representation of space in convolutional features,
+further studies are required how these contribute to spatial expressions and whether such representations can be improved with feature engineering.
+ 
+
+In the fifth study \citep{ghanimifard-dobnik-2019-what}, we extended the adaptive attention to 
+enrich
+the visual features with locational information. We found that top-down algorithmic localisation has the most positive effect on language generation among the different methods for enriching visual features. 
+The effect of both a top-down semantic role assignment and geometric feature vectors is positive, but 
+much less than expected.
+This observation is consistent with our findings in the third and fourth studies on unimodal language models, which indicated that reliable predictability of object relations without visual features varies depending on the kind of spatial relations in the absence of adequate geometric descriptions. 
+These observations demand 
+further 
+studies, especially beyond image description tasks, for example in visual question answering.
+
+In the sixth study \citep{ghanimifard-dobnik-2017-learning}, we%
+examined
+the degree of generalisation%
+a recurrent language model learned compositional descriptions. 
+We found that the generalisation depends on both the combinatorial and semantic properties of the compositions. 
+The combinatorial properties of compositions change the variations and frequencies of possible phrases (unary vs binary compositions). 
+The semantics of the compositions shape the acceptable space. 
+, for example conjunction and disjunction result in different frequencies.
+Both combinatorial and semantic properties of compositions contribute to token distributions in language.
+
+In the seventh study \citep{bizzoni-etal-2017-deep}, we examined if the knowledge from a unimodal language model could recognise the metaphoricity of adjective-noun compositions.
+This contributed to an understanding of the type of knowledge that could be encoded in the language model. 
+Distribution of tokens, as seen in the first study, could affect the generalisation in language grounding. According to this study, it 
+contributes to encoding of deeper
+non-perceptible knowledge, such as metaphors.
+
+
+\section{Knowledge and grounding}
+One of the central claims of this thesis is that some spatial knowledge is encoded in neural language models. Then, despite the fact that representations in language are not linked to primitive sensory representations, we used the term \emph{grounding} for spatial descriptions that are explainable with a language model instead of perceptual inputs.
+This argument requires a more in-depth discussion about the definition of \emph{spatial knowledge} and \emph{grounding}.
+
+\paragraph{Spatial knowledge}
+
+In this thesis, the term knowledge was extensively used to
+describe 
+language grounding in (1) \emph{spatial knowledge}, (2) \emph{geometric knowledge}, (3) \emph{functional knowledge} and (4) \emph{distributional knowledge} or \emph{knowledge in language models}. 
+The main argument of the thesis is that spatial language projects
+onto the representations in language models. 
+Therefore, distributional knowledge of spatial relations encodes the spatial knowledge (findings of studies 1, 2, 4 and 5 concerning Q1). 
+Nevertheless, the distinction between functional and geometric knowledge implies that there are two different types of spatial expressions. 
+Geometric knowledge is a literal sense of space and functional knowledge is an abstraction of non-spatial relations between objects. 
+We expect that, by capturing regularity in language use, distributional knowledge captures functional knowledge (study 1 concerning Q1). 
+However, the distributional distinction between functional and geometric use is entangled in datasets. 
+Therefore, distributional knowledge captures regularities that seem more geometric than functional. 
+
+This distributional property is an artefact of the entangled concept of space. The skewness of spatial relations in datasets is a result of this entanglement. 
+For example, the reason the functional sense of the relation \emph{`over'} as a sheltering relation is possible is because of its geometric properties and the rules of physics. 
+Similarly, the reason why some objects are functionally related is because of their geometric shapes and their geometric capacity of being in that position. 
+The entangled relation between functional and geometric meaning calls for a better understanding of spatial knowledge. 
+Without spatial reasoning, the functional meaning of the relations is not possible. 
+In this, we argued that language models capture spatial knowledge, but 
+also that there are different types of spatial knowledge and what their implications are for descriptions in different contexts.
+The evaluation of the relation between the knowledge kinds in different contexts in which spatial descriptions are made should be addressed in future work.
+
+\paragraph{Grounding}
+The conclusion of this thesis with regard to grounding is that any prediction based on the available evidence is a form of grounding. 
+The representation of this evidence varies in models. 
+Predictions of a show-and-tell system are grounded in both situated features and the 
+modelling assumptions, such as the function and design of the model (composition of modules), its training data %
+(sufficient data for model convergence) 
+and its learning goals.
+Therefore, when %
+the system makes 
+predictions without relying on situated features or with minimal attention to these situated features, there are two explanations of this performance:
+\begin{itemize}
+	\item[(1)] Some assumptions used building the model are erroneous, such as the assumption around what training data provides sufficient knowledge for constructing the model.
+	\item[(2)] The situated features do not contain independent encoding of knowledge required for the task. In other words, the task relies on other information, such as world knowledge. This kind of missing information could be included as different representations of the model. This can be done by:
+	\begin{itemize}
+	\item[(i)] a module
+	that fuses
+	language and vision
+	to exploit the fusion of
+	the situated features with other representations, or 
+	\item[(ii)] exclusively encoding some knowledge about the task in modules, such as language models, that provide distributional evidence. 
+	\end{itemize}
+\end{itemize}
+
+In the case of generating spatial descriptions, the predictability of relations from textual evidence or with minimal contribution from visual features has two explanations:
+\begin{itemize}    
+	\item[(1)] There might be mistakes in the model design, feature representations or the assumption that training data has appropriate information for the task. 
+	For example, knowledge about embodied actions and interactions between objects may be missing from show-and-tell datasets.
+	\item[(2)] Some spatial knowledge is encoded in the distributional knowledge of language, in addition to situated visual knowledge, such as functional knowledge and frame of reference. 
+	The neural language model encodes this knowledge in its parameters. 
+	The composition of the visual module and the language module contextualises the representations based on the training data. %
+\end{itemize}
+
+With this conclusion about grounding, we can examine the future improvements of vision and language models. 
+
+\section{Future work}
+
+The discussion 
+of
+grounding 
+and
+learning representations with deep learning methods opens several directions for future research:
+\begin{itemize}
+	\item The current model designs use simple tools of modality fusion, such as embedding representations, attention mechanisms and simple vector manipulations, including concatenation or multiplication. 
+	More research on modality fusion is required in future studies.
+	\item Our attempts to understand what is learned in neural language models can be expanded 
+	with additional
+	methods of explainability and probing representations. 
+	The question of what representations are learned and what are the effect of parameters is beneficial for %
+	improving
+	the algorithms.
+	\item In addition to investigating explainability and developing better modules, more rigorous testing of models is required to measure their success. Such a study would 
+	lead to development of
+	better learning goals and loss functions for the model. Instead of language modelling with token level loss, new loss functions related to task problem-solving, such as spatial navigation, may be able to learn different aspects of meaning in language models. 
+	\item This requires a better understanding of the data. We found two types of bias in image description datasets:
+	\begin{itemize}
+		\item[(i)] The bias in the task constrains the words to specific senses. 
+		In the image description task, spatial relations have a strong bias towards relating \emph{what} is in the picture, instead of relating \emph{where} objects are in respect to each other.
+		\item[(ii)] The bias in the visual composition of images. The images in image captioning datasets are focused on objects in regions of interest. 
+		This suggests that other datasets should also be examined, such as those collected from ego centric robotic sensory and imaging data, which lack such a focus of attention on objects as a property of image compositions.
+	\end{itemize}
+\end{itemize}

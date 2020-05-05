@@ -1,0 +1,800 @@
+
+\chapter{Functional/Geometric Spectrum In 
+Bounding Boxes}
+\chaptersource{Simon Dobnik and Mehdi Ghanimifard.}{Spatial descriptions on a functional-geometric spectrum: the location of objects.}{Preprint - Under review 2020.}
+
+\paragraph{Abstract}
+  Experimental research on spatial descriptions shows that their
+  semantics are dependent on several modalities, among others (i) a
+  geometric representation of space (``where'', geometric knowledge)
+  and (ii) dynamic kinematic routines between objects that are related
+  (``what'', functional knowledge). In this paper we examine whether
+  geometric and functional bias of spatial relations is also reflected
+  in large corpora of images and their corresponding descriptions. In
+  particular, we examine whether the variation in object locations in the usage of a relation is a
+  predictor of that relation's functional or geometric bias. Previous experimental psycho-linguistic work has examined the bias of some spatial relations, however our corpus-based computational analysis allows us to examine the bias of spatial relations and verbs beyond those that have been tested experimentally.  Our findings have also implications for
+  building computational image descriptions systems as we demonstrate
+  what kind of representational knowledge is required to model spatial
+  relations contained in them.
+
+
+\section{Introduction}\label{sc2020:sec:introduction}
+
+The work on spatial relations such as ``the chair is to the left of
+the table'' and ``the bicycle near the door'' shows that the semantics
+of spatial relations is complex, drawing on several different
+modalities which include among others (i) scene geometry, (ii)
+functional interactions between objects, and (iii) dialogue
+interaction between conversational partners. %
+For example, \cite{Landau:1993aa} argue that language encodes objects
+and places differently and this may be a reflection of different
+cognitive processes in the visual system: ``what'' and ``where''.
+Further, a number of papers \cite{CoventryEtAl:2001,Coventry:2004aa,Coventry:2005aa,Horberg:2008aa}
+show experimentally that different spatial relations have different
+bias in terms of functional (``what'') and geometric (``where'')
+knowledge. Similarly, \cite{Landau:2016aa} argues that two classes of
+spatial relations have different developmental trajectories and may be
+rooted in different neural representations. \cite{Dobnik:2017ac}
+argues that the bias to function and geometry of a particular relation
+is contextual and task-dependent.
+
+For this reason, computational modelling of descriptions of spatial
+relations is challenging. Firstly, it requires information from each
+of these modalities to be present in the dataset. For example, it is
+hard to collect a large enough dataset of functional interactions
+between objects and represent these interactions as computationally useful
+representations. Secondly, there is a challenge of information fusion
+which needs to be attuned for different words in different
+contexts. Recently, deep neural networks modelling language and vision
+as perceptually grounded language models have demonstrated a lot of
+success \cite{Xu:2015aa,Lu:2016ab}. An interesting research question
+therefore is what information such networks can capture in their
+representations from the available modalities and whether such
+representations correspond to the representations that have been
+argued for in linguistic and psychological literature.
+
+For example, \cite{Dobnik:2013aa,Dobnik:2014ab,dobnik-etal-2018-exploring} explore
+whether functional and geometric bias can be recovered from the
+information encoded in a language model, the semantic associations
+encoded in the sequences of words. Language models together with word
+embeddings \cite{Bengio:2003aa} are widely used to represent
+linguistic meaning in computational semantics and they are based on
+the premise known as the \emph{distributional hypothesis}
+\cite{Firth:1957aa} that words occuring in similar contexts,
+represented by other words, will have similar meanings
+\cite{Turney:2010aa}. If we relate the distributional hypothesis to grounding in perception, this is because words co-occuring together will
+refer to identical situations and therefore the contexts of words become
+proxies for accessing the underlying situations. It follows that information encoded in
+language models about spatial descriptions should encode some relevant
+semantics about dynamic kinematic routines between the objects that
+are related, albeit very indirectly. Hence,
+\cite{Dobnik:2013aa,Dobnik:2014ab,dobnik-etal-2018-exploring} demonstrate that the
+functional-geometric bias of expressions that have been tested
+experimentally in \cite{CoventryEtAl:2001} is reflected in the degree
+to which target and landmark objects are associated with a relation in
+spatial descriptions extracted from a corpus of image
+descriptions. They start with the idea that while any two (abstract)
+objects can be related in geometric space, functional relations
+between the objects and relation are more specific, defined by the
+possible functional interaction between the objects. They demonstrate
+that this is expressed in the variability and generality of the target
+and landmark objects. Since a geometrically-biased spatial relation
+can relate any kind of objects that can be placed in a particular
+space, the objects used with such a relation will be more variable
+than the objects that occur with functionally-biased relations that
+also encode the nature of object interaction. They also show that
+usage of descriptions of an image corpus is crucial in this task since
+in a general corpus, a wider range of situations is reflected in the
+word contexts that may include metaphoric usages of the spatial words
+in other domains. We may consider such metaphorical usage of spatial
+relations in other domains as highly functional.
+
+
+The experiments based on \cite{CoventryEtAl:2001} show that spatial
+relations have functional or geometric \emph{bias} which means that
+both components are relevant for the semantics of a description, just
+not the same degree. For example, a functionally-biased relation such
+as \emph{over} is also sensitive to geometry to some extent, it
+appears that a presence of a function skews the regions of
+acceptability for the target object of that relation. The deviation in
+geometry can be explained by the fact that under a consideration of a
+functional relation different parts of the target and landmark object
+will become attended \cite{Coventry:2005aa,Carlson:2006aa}. This
+results in a situation where the centroids of bounding boxes of target
+and landmark objects are displaced from the locations where we would
+expect to find them based on the geometric constraints alone. For
+example, in the case of a ``teapot over a cup'' it must be ensured
+that the spout of the teapot is located in such a way so that the
+liquid will be poured into a cup. In a scene described by a
+description ``the toothpaste is over a toothbrush'' the shape of the
+bounding boxes will be different from the previous scene as well as
+the location of the attended areas. In the case of an ``apple in a
+bowl'' the bowl or its contents must constrain the movement of the
+apple (so that it does not fall out of the bowl) and hence locations
+of apples that are outside the bounding box of the bowl are also
+acceptable, for example where an apple is on the top of other
+apples. These examples suggest that over all contexts of
+target-landmark objects, the variation in locations of objects
+represented as bounding boxes will be much higher with
+functionally-biased spatial relations than geometrically-biased ones
+which will be closer to the axes of the geometric space. The latter is
+confirmed by the spatial templates of \cite{logan1996computational} where in
+the absence of the functional knowledge, when an abstract shapes are
+used as targets and landmarks, both geometric and functional relations
+such as ``over'' and ``above'' give very similar axis-centred spatial
+templates.  Hence, in this work, we explore whether we can detect a
+difference in the variability of the target objects in relation to the
+landmark objects for spatial relations of either geometric or
+functional bias in terms of representations of objects as visual
+features in images from a large corpus of images and descriptions and
+for relations that go beyond the ones that were tested
+experimentally. We expect that this variability will be the opposite
+of the variability that has been previously shown for textual
+data. Functional information can be recovered from the textual
+information about \emph{what} objects are interacting, while geometric
+information can be recovered from \emph{where} the visual features of
+objects are. Hence, we expect that relations that were experimentally
+found to have a functional bias will be less variable in their choice
+of target and landmark objects but more variable in terms of where
+these objects are in relation to the prototypical axes from the
+landmark. On the other hand, relations that were experimentally found
+to have a geometric bias, are expected show a higher variation in
+terms of the object kinds they relate but these will be geometrically
+less variable from the axes based on the landmark.
+
+The experimental work on functional and geometric bias of spatial
+relations focuses on abstract images where the type of objects, their
+location and the nature of functional interaction is carefully
+controlled. This gives us accurate judgements about the applicability
+of descriptions but since the task focuses on abstract scenes this
+gives us different judgements to those we would have hoped to have obtained in real-life
+situations simply because of the perceptual and linguistic context is
+different from real-life situations
+\cite{Dobnik:2017ac}. %
+Ideally, we would need a corpus of interactions between real objects
+and their spatial descriptions that on the perceptual side would be
+represented as 3-dimensional temporal model. Collecting such a corpus
+on a large scale would be a very challenging endeavour, although
+important work in this area has recently been done in route
+instructions in a virtual environments \cite{Thomason:2019aa}. On
+the other hand, there exist several large corpora of image
+descriptions, e.g.  \cite{Krishna:2016aa} which contain spatial
+descriptions and a large variety of interacting objects in real-life
+situations. For this reason they are, in our opinion, an attractive
+test-bed for examining the meaning of geometrically-biased and
+functionally-biased spatial relations. The down-side of image
+corpora is that the visual representations scenes are skewed, depending
+on the angle and the focus/scale at which an image was taken which
+means that an object such as a chair may have a different shape and
+size in respect to the image from one image to another. There is
+also no information about object depth and the dynamic interaction of
+objects. To counter this variation in objects we will introduce some
+normalisation steps. Of course, there will also be some noise in the
+scene representation's we obtain but we hope this noise will be
+uniform across different images and kinds of descriptions and
+therefore a relative comparison of descriptions of different bias will
+still give us a valid result.
+
+Why is identification of functional and geometric bias of spatial
+relations relevant? Theoretically, the experiments give us more
+insights into the way spatial cognition is reflected in
+language. Showing that there is a distinction between these two
+classes of spatial relations on a large scale dataset of image
+descriptions gives a further support to the experimental evidence that
+has been obtained in carefully designed experiments. Knowing that
+there are different classes of spatial relations can help us in the
+task of generating image descriptions, for example in a robotic
+scenario. Following our observation, in an image description task
+functional relations are more informative than geometric
+relations as in addition to geometric component they also say
+something about the relation between the objects.\footnote{Notice,
+  however, that there are tasks where geometric information may be
+  more informative, for example in locating a named object in a visual
+  scene when answering a question.} In a given scene a target object
+can be described and related to the landmark with several spatial
+relations based on geometric considerations alone. However, these
+descriptions could be filtered by considering those relations that are
+functionally more likely. The investigation also has implication for
+end-to-end image captioning systems build with deep learning
+architectures. Knowing that different spatial relations have a
+different bias for visual and textual modality would allow us a better
+comparison and evaluation of such systems. For example, there is a
+significant discussion in the vision and language community that
+end-to-end image captioning systems and visual question answering
+systems are relying too much on the information from language models
+\cite{Agrawal:2017aa} rather than grounding words in an image,
+particularly when it comes to describing relations between
+objects. Knowing that not all spatial relations are equally
+geometrically spatial has important implications for evaluating such
+systems: (i) it shows that provided there is a balanced dataset
+reliance of a spatial relation on a language model is not necessarily
+a shortcoming but rather that is in fact the dimension that determines their
+meaning and there is a gradience in the way a description is grounded
+in visual vs textual features; (ii) it gives us insights into how we should
+build such systems in the future so that both (or even more)
+modalities are appropriately represented.
+
+This paper is organised as follows: in Section~\ref{sc2020:sec:dataset} we
+describe the dataset of images and descriptions used in our studies; in
+Section~\ref{sc2020:sec:dense-vectors} we describe how we represent geometric
+information from image annotations for spatial relations and how such
+representations can be compared for functional and geometric bias; in
+Section~\ref{sc2020:sec:variation-of-dense-vectors} we introduce a more
+sophisticated comparison in terms of the variation in our feature
+representations for different spatial relations from a representative
+representation; and we conclude in Section~\ref{sc2020:sec:conclusion}.
+
+
+
+
+
+\section{Dataset}\label{sc2020:sec:dataset}
+
+We base our investigations on the Visual Genome dataset
+\cite{Krishna:2016aa} which is a crowd-sourced annotations
+of 108,007 images. The dataset comprises several types of annotations including the
+region descriptions (phrases and sentences referring to one bounding box), objects (annotated as
+bounding boxes), attributes for each object annotation, and \emph{relationships} between
+them (triplet of subject, predicate, object). Most object names, attributes and predicate of relationships are also mapped to WordNet synsets.
+The predicates in relationships
+include \emph{spatial relations} such as ``\emph{above}", ``\emph{under}", ``\emph{on}", ``\emph{in}"
+but also verbs describing events such as ``\emph{holding}" and ``\emph{wearing}", or a combination of both such as ``\emph{sitting on}".
+
+Without any data cleaning, the total number of possible forms of relation tokens is 36,550. 
+Since spatial relations are multi-word expressions, we create a
+dictionary of relations capturing different variations of their
+syntactic form (e.g. ``to the left of'', ``on the left'', ``left'',
+etc.) based on the lists of English spatial relation constructions in
+\cite{Landau:1996aa} and \cite{herskovits1986language}. 
+Out of 235 spatial relations, we only found 78 types.
+Some variation in writing of relationships may be simply due to the
+annotator shorthand notation, e.g. ``to left of''. We combine the
+compound variants of spatial relations to a lower-cased single variant
+in cases where we can be reasonably sure that this will not affect
+their semantics in terms of functional and geometric
+bias. %
+Duplicate descriptions per image which are created by different
+annotators are
+removed, %
+as well as those descriptions where the extracted spatial relations
+are not used in a complete locative description involving a target
+object, relation and a landmark, e.g. ``chair on left''.
+At the end, we only kept those relations which have more than 30 instances in the dataset. 
+
+In addition to spatial relations, we also added a few verbal relations which possibly have spatial content.
+Including the verbs which \cite{collell2018acquiring} showed to have strong predictability of object on the y-axis. The dictionary of all relations examined in this study is given in Table~\ref{sc2020:tab:vocabulary}.
+
+\begin{table}[hbt]
+	\caption{The list of spatial relations captured and additional verbs with spatial content.}\label{sc2020:tab:vocabulary}
+	\centering
+	\begin{tabular}{|m{30em}|}
+		\hline 
+		\emph{over},
+		\emph{above},
+		\emph{below},
+		\emph{under},
+		\emph{left of},
+		\emph{right of},
+		\emph{on},
+		\emph{in}, 
+		\emph{inside},
+		\emph{outside},
+		\emph{far from}, 
+		\emph{away from},
+		\emph{next to},
+		\emph{near to}, 
+		\emph{across},
+		\emph{at},
+		\emph{with},
+		\emph{beneath}, 
+		\emph{underneath},
+		\emph{through},
+		\emph{alongside},
+		\emph{against},
+		\emph{off}, 
+		\emph{between},
+		\emph{from},
+		\emph{beside}, 
+		\emph{to}, 
+		\emph{by}, 
+		\emph{along}, 
+		\emph{around},
+		\emph{behind},
+		\emph{bottom}, 
+		\emph{top},
+		\emph{front of},
+		\emph{back of},
+		\emph{side of}, \\
+		\hline
+		\emph{flying},
+		\emph{kicking},
+		\emph{cutting},
+		\emph{catching},
+		\emph{riding}, 
+		\emph{seeing},
+		\emph{looking}, 
+		\emph{floating}, 
+		\emph{finding}, 
+		\emph{pulling}, 
+		\emph{removing}, 
+		\emph{having},
+		\emph{wearing},
+		\emph{containing}, 
+		\emph{holding}, 
+		\emph{supporting}, 
+		\emph{sitting},
+		\emph{touching}. \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\section{Representing locations as dense geometric vectors}\label{sc2020:sec:dense-vectors}
+
+Each bounding box in Visual Genome is represented with 4 numerical
+values: the x-, y- coordinates relative to the image frame, the
+bounding box width and
+height. %
+In order to compare the geometric arrangements of objects represented
+as bounding boxes between different spatial relations, as well as to
+compare this data with the data from spatial templates from
+\cite{logan1996computational}, we convert both representations to
+3-dimensional dense vectors $[x,y,d]$ where $x$ and $y$ represent
+directions in the 2-dimensional space and $d$ is a Euclidean distance
+between $x$ and $y$. Hence, we separate directionality (represented by
+$x$ and $y$) from the distance. The intuition behind this comes from a
+distinction between \emph{directionals} (``to the left of'' and
+``above'') and \emph{topological relations} (``close'' and ``far'')
+where the former are dependent on both directionality and distance but
+the latter are only dependent on distance. The 3-dimensional vectors
+(the $x$ and $y$ dimension) are inspired by vectors introduced in the
+Attentional Vector Sum Model (AVS) \cite{RegierCarlson:2001}. However,
+as we will describe below they are used quite differently. Rather then
+modelling the attention for a particular pair of bounding boxes in the
+AVS model we use them to estimate attention between all bounding boxes
+that are related by a particular spatial relation. In other words, we
+use them to estimate the likelihood that for a particular spatial
+relation a particular location is occupied by an object. Therefore,
+the representations are similar to the notion of spatial
+templates. Here, other representations of bounding boxes could also be
+used (see for example \cite{Sadeghi:2015aa,Nikolaus:2019aa}. We opt
+for low-level features that have been experimentally shown to be
+directly relevant for the (geometric) semantics of spatial relations
+and which are also available in spatial templates.
+
+
+
+\begin{figure}
+	\centering
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.75\textwidth]{studies/sc2020/figures/target_landmark_arrows.png}\\
+		(a) Bounding boxes in an image
+	\end{minipage}%
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.75\textwidth]{studies/sc2020/figures/target_landmark_arrows_spt.png}\\
+		(b) Spatial template %
+	\end{minipage}%
+	\caption{(a) Images are segmented to a fixed set of locations
+          and relation vectors are calculated for every pair of
+          locations occupied by the bounding boxes of target and
+          landmark. (b) In spatial templates a vector is calculated
+          for every location of the template originating in the
+          location of the landmark.  } \label{sc2020:fig:bbox_vecs}
+\end{figure}
+
+
+
+We derive the dense features as follows. First, as shown in
+Figure~\ref{sc2020:fig:bbox_vecs}a, we segment images into $7 \times 7$
+locations. Then, for every
+pair of points in the locations matrix, we define a dense vector as:
+
+\begin{align*}
+	\text{for two points on image}
+	\begin{cases}
+		p_1 = \langle i_1, j_1\rangle\\
+		p_2 = \langle i_2, j_2\rangle
+	\end{cases}, 
+	\vec{u}_{p_1, p_2} = \begin{bmatrix}
+	x \\
+	y \\
+	d 
+	\end{bmatrix} = \begin{bmatrix}
+	\frac{i_{2} - i_{1}}{||\overrightarrow{p_1 p_2}||_2} \\
+	\frac{j_{1} - i_{2}}{||\overrightarrow{p_1 p_2}||_2} \\
+	\mathtt{sgn} \cdot ||\overrightarrow{p_1 p_2}||_2
+	\end{bmatrix}
+\end{align*}
+
+\noindent where $\vec{u}_{p_1, p_2}$ represents the dense geometric relation
+features between two points, which $p_1$ is a point on landmark and $p_2$ is on the target, the Euclidean distance between them is $||\overrightarrow{p_1 p_2}||_2 = \sqrt{(i_{2} - i_{1})^2+(j_{2} - j_{1})^2}$, and $\mathtt{sgn}$ is a sign value which is $-1$ if $p_2$ is also a point on the landmark bounding box, otherwise $+1$.
+
+
+
+For each relation \textsc{rel}, this gives us a collection of vectors.
+For bounding boxes annotated with relations in the images of Visual Genome,
+we build the collection of dense vectors of all points connecting
+targets and landmarks related by each particular relation in the dataset
+($V_{\textsc{rel}}^{(vg)}$). 
+Formally, this
+set is represented as follows:
+\begin{align}
+V_{\textsc{rel}}^{(vg)} = \bigg\{ \vec{u}_{p_1, p_2} \bigg\}_{\substack{
+		\langle \textsc{trg},\textsc{rel}, \textsc{lnd} \rangle \in \mathrm{Images} \\
+		p_1 \in \mathrm{bbox}_\textsc{lnd} \\
+		p_2 \in \mathrm{bbox}_\textsc{trg}
+}}
+\end{align}
+\noindent where $\mathrm{bbox}_\textsc{trg}$ and $\mathrm{bbox}_\textsc{lnd}$ are the collection of points in bounding boxes of target \textsc{trg} and landmark \textsc{lnd}.\footnote{For computational convenience, instead of including all possible annotations in this set, we randomly sampled a maximum of 1000 triplets from the relationship dataset.}
+
+Similarly, we use this method on spatial templates from
+\cite{logan1996computational} to build all possible dense vectors. As shown in
+Figure~\ref{sc2020:fig:bbox_vecs}b, we create a dense vector originating in
+the central location of the landmark and ending at every possible location
+of target in the spatial template. 	
+Each vector from a spatial template is associated with the acceptability score
+of the target location.
+\begin{align}
+V^{(st)} = \bigg\{ \vec{u}_{\langle 3, 3\rangle, \langle i, j\rangle} \bigg\}_{\substack{
+		i \in \{1,..,7\} \\
+		j \in \{1,..,7\}
+	}}, S_{\textsc{rel}} = \bigg\{ \vec{s}_{i,j} \bigg\}_{\substack{
+		i \in \{1,..,7\} \\
+		j \in \{1,..,7\} 
+}} 
+\end{align}
+\noindent where $S_{\textsc{rel}}$ represents the collection of normalised acceptabilities in spatial template of the relation \textsc{rel}. 
+
+These vectors in each collection are then projected to a single vector
+representation using the following methods. 
+For the collection of vectors from
+a spatial template, the representative vector is the weighted sum of all possible vectors with acceptability scores:
+\begin{equation}
+	\vec{v}_{\textsc{rel}}^{(st)} = \sum_{\substack{
+			i \in \{1,..,7\} \\
+			j \in \{1,..,7\} 
+		}}{s_{i,j} \cdot \vec{u}_{\langle 3, 3\rangle, \langle i, j\rangle}}
+\end{equation}
+
+\noindent For the collection of vectors from the Visual Genome bounding boxes, 
+the representative vector is the expected 3-feature vector:
+\begin{equation}
+	\vec{v}_{\textsc{rel}}^{(vg)} = E[V_{\textsc{rel}}^{(vg)}] = \frac{1}{|V_{\textsc{rel}}^{(vg)}|}\sum_{\vec{v} \in V_{\textsc{rel}}^{(vg)}}{\vec{v}}
+\end{equation}
+
+\noindent where $|V_{\textsc{rel}}^{(vg)}|$ is the number of vectors. Adding vectors with contradicting features will cancel each other and remaining vector points at a direction with least opposite directions. More importantly, $\vec{v}_{\textsc{rel}}^{(vg)}$ resulted from bounding box annotations in visual genome is similar $\vec{v}_{\textsc{rel}}^{(st)}$ resulted from compressing the spatial templates into a three dimensional feature vectors. 
+
+
+\begin{figure}
+	\centering
+	\begin{minipage}{\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{studies/sc2020/figures/above_vg_features.pdf}
+		\includegraphics[width=0.2\textwidth]{studies/sc2020/figures/under_vg_features.pdf}
+		\includegraphics[width=0.2\textwidth]{studies/sc2020/figures/right_of_vg_features.pdf}
+		\includegraphics[width=0.2\textwidth]{studies/sc2020/figures/next_to_vg_features.pdf}
+	\end{minipage}\\
+	\begin{minipage}{\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{studies/sc2020/figures/above_st_features.pdf}
+		\includegraphics[width=0.2\textwidth]{studies/sc2020/figures/under_st_features.pdf}
+		\includegraphics[width=0.2\textwidth]{studies/sc2020/figures/right_of_st_features.pdf}
+		\includegraphics[width=0.2\textwidth]{studies/sc2020/figures/next_to_st_features.pdf}
+	\end{minipage}\\
+	\caption{Examples of $\vec{v}_{\textsc{rel}}^{(vg)}$ and  $\vec{v}_{\textsc{rel}}^{(st)}$: among the examples, x-y features are mostly similar but the scale and sign of distances are different.} \label{sc2020:fig:vg-st:samples}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{minipage}{0.6\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{studies/sc2020/figures/heatmap_distance_st_vg.pdf}
+	\end{minipage}%
+	\caption{A comparison of dense vector representations from images $\vec{v}_{\textsc{rel}}^{(vg)}$ and those from spatial templates $\vec{v}_{\textsc{rel}}^{(st)}$ with the cosine distance: $1-cosine(\vec{v}_{\textsc{rel}}^{(vg)}, \vec{v}_{\textsc{rel}}^{(st)})$. } \label{sc2020:fig:vg-st}
+\end{figure}
+
+
+
+To compare the projected dense vectors we have obtained from the
+images with those from the spatial templates we use cosine similarity
+or distance as shown in Figure~\ref{sc2020:fig:vg-st}
+where the horizontal axis represents the vectors from spatial
+templates $\vec{v}_{\textsc{rel}}^{(st)}$ and the vertical axis
+represents the vectors from images
+$\vec{v}_{\textsc{rel}}^{(vg)}$. The results indicate that the
+3-dimensional vectors from the two datasets are very similar except in
+the case of ``away
+from''. %
+Except for this case the lowest cosine distance is on the
+diagonal. The results also indicate that pairs of geometrically or
+functionally biased spatial relations such as ``over'' and ``above''
+and ``under'' and ``below'' have similar overall directions and
+distances. Projective relations have clearly defined opposites
+alongside one axis but topological relations are overlapping with the
+projective relations. ``next to$_{st}$'' is similar to ``next
+to$_{vg}$'', ``away from$_{vg}$'', ``near to$_{vg}$'' and ``far
+from$_{vg}$'' and ``away from$_{st}$'' is dissimilar to all. This has
+possibly to do with the way distance is represented in images. Humans
+are able to estimate distance between two focused objects not on their
+actual size but the size they know from their background knowledge.
+
+The comparison of dense vectors here indicates that similar dense
+vectors are obtained from both datasets. However, it does not
+distinguish functional and geometric bias of different relations. For
+example, ``over$_{st}$'' is equally similar to ``over$_{vg}$'' and
+``above$_{vg}$'' while we were expecting that since ``over$_{st}$'' is
+used in the geometric context it will more similar to
+``above$_{vg}$''. %
+This is because cosine similarity/distance takes into account all
+three dimensions $x$, $y$ and $z$ of the dense vectors. However, we
+expect that ``over$_{st}$'' will be similar to ``over$_{vg}$'' in $y$
+and $d$ dimensions but different in the $x$ dimension which
+distinguishes its geometric and functional use.
+
+In the following section we examine the 3-dimensional feature space of
+the dense vectors in terms of the variation in the distribution of
+features. Therefore, we need to look for a measure that captures
+variation in distribution of features.
+
+
+\section{Variation of features within dense vectors}\label{sc2020:sec:variation-of-dense-vectors}
+
+We argued in Section~\ref{sc2020:sec:introduction} that we expect that
+functionally-biased relations will be associated with more variable
+locations of target and landmark objects as these will also be
+dependent on the functional relations between individual object
+pairs. In the previous section we represented the locations between
+targets and landmarks as dense vectors which were then projected to
+one representative vector for each spatial relation.
+The degree of divergence from the representative vectors can be considered as an indication for non-geometrical use of spatial relations. 
+In order to test this, for each spatial relation, we calculate a deviation of individual
+target-landmark vectors $\vec{v}$ from the representative 3-dimensional dense vector $\vec{v}_{\textsc{rel}}^{(vg)}$.
+As a metric of deviation we use cosine distance:
+
+\begin{equation}\label{sc2020:eq:distances}
+	Distances = \bigg\{ 1-cosine(\vec{v}_{\textsc{rel}}^{(vg)}, \vec{v}) \bigg\}_{\vec{v} \in V_{\textsc{rel}}^{(vg)}}
+\end{equation}
+
+
+
+\begin{figure}
+	\centering
+	\begin{minipage}{\textwidth}
+		\centering
+		\includegraphics[width=0.8\textwidth]{studies/sc2020/figures/avg_cosine_from_bbox_fun-geo+verbs.pdf}\\ (a) \\
+		\includegraphics[width=0.8\textwidth]{studies/sc2020/figures/skewness_cosine_from_bbox_fun-geo+verbs.pdf} \\ (b)
+	\end{minipage}%
+	\caption{(a) The average cosine distance of dense vectors $[x, y, d]$ from the expected dense vector of each spatial relation. (b) The skewness in distribution of distances.} \label{sc2020:fig:variations}
+\end{figure}
+
+
+
+
+
+We expect that on average, cosine distances in geometrically-bias relations are closer to 0 (there is a clearer central tendency), and the overall distribution of cosine distances is positively skewed: the mode of cosine distances is close to zero while the mean and the tail of differences is skewed to the right.%
+\footnote{To calculate skewness we use an implementation of the Fisher-Pearson coefficient \cite[s.2.2.24.1]{kokoska2000crc} in \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.skew.html}{\texttt{scipy.stats.skew}}.}
+In Figure~\ref{sc2020:fig:variations}, 
+we select a set of geometrically- (blue) and functionally-biased (orange) relations as reported in
+psycho-linguistic experiments and plot (a) their average cosine distances of dense vectors from their representative vector and (b) the skewness of cosine differences. %
+We also include relations the bias of which has not been tested experimentally (grey) but we expect that this is demonstrated by their position in the graph between the key-points determined experimentally. Finally, we
+also
+include some verbs describing events and situations involving interacting objects in space that are also annotated as relationships in the Visual Genome (green), e.g. ``boy, feeds, giraffe''. We are particularly interested in the verbs that are reported in Collel et al. \cite{collell2018acquiring} for which the location of the (target) object is most strongly predictable from the $y$ dimension (``flying'', ``kicking'', ``cutting'', ``catching'' and ``riding'') (dark green in Figure~\ref{sc2020:fig:variations}) and those for which the $y$ dimensions is the least predictable in respect to the location of the object (``see'', ``float'', ``finding'', ``pulled'' and ``removes'') (light green) listed in their Table 3, p.6770. However, here \cite{collell2018acquiring} do not consider the $x$-dimension which may be a relevant dimension for the verbs in the picture.
+A quick comparison of the two lists gives an impression that the
+former contains descriptions of events involving object relations that
+more strongly grounded in the image representations (e.g. ``riding'')
+and are therefore similar to geometrically-biased spatial relations,
+while the second list contains descriptions of events that are less
+strongly grounded in the image representations (e.g. ``sees'') and
+would require a simulation of dynamic kinematic routines between the
+objects which makes them similar to functionally-biased spatial
+relations.
+
+Examining the average cosine distances from the representation vector
+of each spatial relation in Figure~\ref{sc2020:fig:variations}a we can see
+that relations that have been identified as geometrically-biased
+(blue) tend to have a lower average cosine distance from the
+representation's dense vector than those that have been identified as
+functionally-biased (orange). The same tends also to be the case for
+verbs identified in \cite{collell2018acquiring} for which the objects
+are more dependent on the $y$ (dark green) compared to verbs for which
+the objects are less dependent on the $y$ dimension (light
+green). Note that in this comparison a deviation of the entire
+3-dimensional vector $[x, y, d]$ was taken into account and therefore
+a deviation can be in any of these dimensions. Examining the skewness
+of cosine distances from the representation vector of each spatial
+relation in Figure~\ref{sc2020:fig:variations}b we can see that
+geometrically-biased verbs and verbs that are more strongly grounded
+show a tendency towards a higher skewness of distribution, they are
+more biased towards the representational vectors. Overall, the results
+indicate support for our hypothesis in Section\ref{sc2020:sec:introduction}
+that bounding boxes are predictors of the functional and geometric
+bias as well as they indicate that the same bias is also present in
+verbal descriptions of scenes.
+
+\begin{figure}
+	\centering
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{studies/sc2020/figures/on_variations_what.pdf}
+	\end{minipage}%
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{studies/sc2020/figures/in_variations_what.pdf}
+	\end{minipage}\\
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{studies/sc2020/figures/over_variations_what.pdf}
+	\end{minipage}%
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{studies/sc2020/figures/above_variations_what.pdf}
+	\end{minipage}\\
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{studies/sc2020/figures/right_of_variations_what.pdf}
+	\end{minipage}%
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.85\textwidth]{studies/sc2020/figures/left_of_variations_what.pdf}
+	\end{minipage}%
+	\caption{Using the KDE method we plot a histogram of cosine distances of individual examples from the representational vector of each relation which shows skewness to zero for geometrically-biased usages of relations. For the projective relations ``right of'' and ``left of'' the examples with landmarks with tendency for enforcing intrinsic frame of reference (animate objects, objects with clearly defined front and back) are negatively skewed which represents maximum cosine distance. %
+        }\label{sc2020:fig:what_hist}
+\end{figure}
+
+
+
+
+In Figure~\ref{sc2020:fig:what_hist} we examine the histograms of deviations
+from the representational vectors of ``on'', ``in'', ``over'',
+``above'', ``right of'' and ``left of''.  To plot these histograms we
+use Kernel Density Estimation (KDE)\footnote{We use an implementation based on  \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html}{\texttt{scipy.stats.gaussian\_kde}}} \cite{scott2015multivariate} which
+indicates the density of samples in the range of [0, 2] of the cosine
+distance (Equation~\ref{sc2020:eq:distances}). We also give examples of
+target-landmark pairs which have the highest (orange) and the lowest
+(blue) average distances from the representational vectors. These
+examples indicate that functionally biased relations (``on'', ``in''
+and ``over'') can be and are used in contexts where the geometric
+constraint is also satisfied and this is represented in the image
+while they can also be used in the contexts where there is a deviation
+from the geometric constraint, just as predicted by experiments in
+\cite{CoventryEtAl:2001}. Interestingly, among the cases that show
+high deviation from the representational vectors we also find examples
+that are typically considered to involve more complex geometric
+conceptualisation, for example ``bracelet on wrist'', ``woman in
+dress'', ``trees over rocks''. However, the relations that we consider
+to be geometrically-biased we also find examples of high deviation
+from the representational vectors. The examples for ``above'' seem to
+to correspond to usages where there is an element of
+covering/protection that has been argued to be the functional
+component of ``over'': e.g. ``clouds above/over pasture'' and ``mirror
+above/over bench'' or cases that require complex geometric
+conceptualisation of the scene ``tree above ground''.\footnote{It
+  could be argued that these cases require functional representation
+  since one needs to know how to geometrically conceptualise the scene
+  involving that particular pair of objects in order the geometric
+  relation can be established.} We are intrigued by the examples that
+deviate from the representational vectors for ``left of'' and ``right
+of''. They frequently contain animate beings (people) or objects with
+clear orientation. Our assumption is that these examples are a
+reflection of changes of the perspective from the relative frame of
+reference of the observer of the image to the intrinsic frame of
+reference of the landmark.
+
+
+
+\begin{figure}
+	\centering
+	\begin{minipage}{0.1\textwidth}
+		\centering
+		above
+	\end{minipage}%
+	\begin{minipage}{0.3\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{studies/sc2020/figures/2407611_umbrella_above_table.jpg}
+	\end{minipage}%
+	\begin{minipage}{0.6\textwidth}
+		\centering
+		\includegraphics[width=0.45\textwidth]{studies/sc2020/figures/above_xy.pdf}
+		\includegraphics[width=0.45\textwidth]{studies/sc2020/figures/above_d.pdf}
+	\end{minipage}\\%
+	\begin{minipage}{0.1\textwidth}
+		\centering
+		over
+	\end{minipage}%
+	\begin{minipage}{0.3\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{studies/sc2020/figures/2370756_umbrella_over_woman.jpg}
+	\end{minipage}%
+	\begin{minipage}{0.6\textwidth}
+		\centering
+		\includegraphics[width=0.45\textwidth]{studies/sc2020/figures/over_xy.pdf}
+		\includegraphics[width=0.45\textwidth]{studies/sc2020/figures/over_d.pdf}
+	\end{minipage}\\%
+	\begin{minipage}{0.1\textwidth}
+		\centering
+		cutting
+	\end{minipage}%
+	\begin{minipage}{0.3\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{studies/sc2020/figures/2384609_man_cutting_cake.jpg}
+	\end{minipage}%
+	\begin{minipage}{0.6\textwidth}
+		\centering
+		\includegraphics[width=0.45\textwidth]{studies/sc2020/figures/cutting_xy.pdf}
+		\includegraphics[width=0.45\textwidth]{studies/sc2020/figures/cutting_d.pdf}
+	\end{minipage}%
+	\caption{The individual features of dense vectors $[x,y,d]$ have different distributions for each relation.} \label{sc2020:fig:features_dist} %
+\end{figure}
+
+
+
+
+As stated earlier, the dense vector representations including their
+cosine distances aggregate three features $[x,y,d]$ and therefore the
+previous comparisons do not take into account the role of each
+individual feature for spatial relations.  In
+Figure~\ref{sc2020:fig:features_dist} we plot the distribution of all
+features over all vectors of $V_{\textsc{rel}}^{(vg)}$ for some
+individual relations.\footnote{These relations were found to be
+  strongly dependent on the $y$ feature in \cite{collell2018acquiring}
+  who did not investigate the contribution of other features.}  The
+individual histograms for the $x$ (centre top), $y$ (centre right) and
+$d$ feature (on the right side) indicate the density of their values
+and the mixture density graph for $x, y$ (centre) shows how these
+features interact.
+This graph demonstrates that ``over'' and ``cutting'' have more
+freedom of variation in the $x$ dimension as well as the negative $y$
+dimension (which indicates overlap of objects) than ``above''. As
+discussed earlier, there is also considerable overlap between all
+three graphs which is due to the fact that functionally-biased
+relations are also used in situations when geometric constraints
+are satisfied. While ``cutting'' is more similar to ``over'' than
+``above'' in terms of the $xy$ dimensions, it has a different distance
+histogram with far fewer overlapping cases.
+
+
+
+
+
+\section{Conclusion}\label{sc2020:sec:conclusion}
+
+In this paper we have demonstrated and discussed how the functional and
+geometric bias of spatial relations can be identified from geometric
+annotations of objects as bounding boxes connected by spatial
+relations in a corpus of images and associated descriptions. The
+bounding boxes are converted to 3-dimensional dense vectors that
+contain information about the $x$, $y$ and $d$ dimension. These
+vectors can be then converged to a single representational vector for
+each spatial relation. Vectors from different relations can then be
+compared with cosine similarity. To increase the granularity of
+comparison we examine how individual examples of annotated situations
+diverge from the representational vectors and what are the
+distributions of these divergences, also at the level of individual
+features. Our results indicate that functional and geometric bias of
+spatial relations can be identified from the geometric spatial
+information corpus of images and descriptions and also that this
+distinction can be carried over to verbs describing situations
+involving objects. In terms of semantics of spatial relations our
+study shows that to a certain degree information that was previously
+determined experimentally can be uncovered from a large corpus of
+image descriptions and for a large number of relations including
+verbs. Practically, such information is extremely useful for building
+end-to-end deep neural models of image captioning as it demonstrates
+what kind of representations are relevant for different kinds of
+descriptions which has also been the focus of our other
+studies. Another question that we find relevant to explore in our
+future work is the observation that the context in which the dataset was
+created may have a general bias on the degree to which function and
+geometry is considered to be relevant. For example, is the goal of the
+image description task to describe \emph{what} is happening with the
+objects or to locate \emph{where} the objects are. Finally, different
+classes of verbs would also deserve a more focused study.
+
+
+
+
+
+\clearpage
+\bibliographystyle{acl_natbib}
+\bibliography{studies/sc2020/references.bib}
