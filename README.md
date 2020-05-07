@@ -1,2 +1,2 @@
-# mehdi_thesis
-The source LaTeX of Mehdi's PhD thesis.
+Publication link:
+http://hdl.handle.net/2077/64095
